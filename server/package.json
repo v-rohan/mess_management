@@ -47,7 +47,8 @@
       "pg": "^8.4.0",
       "pug": "^3.0.2",
       "reflect-metadata": "^0.1.10",
-      "typeorm": "0.2.41"
+      "typeorm": "0.2.41",
+      "uuid": "^9.0.0"
    },
    "scripts": {
       "start": "ts-node src/index.ts",

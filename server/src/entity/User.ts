@@ -9,10 +9,12 @@ import {
     JoinColumn,
 } from "typeorm";
 
+import { Code } from "./Code";
+
 export enum UserRole {
     ADMIN = "admin",
     USER = "user",
-
+    MESS_WORKER = "mess_worker"
 }
 
 @Entity()
@@ -56,6 +58,9 @@ export class User {
 
     @Column({ nullable: true, default: null })
     gender: string;
+
+    @OneToMany(() => Code, (Code) => Code.user)
+    codes: Code[];
 
     @CreateDateColumn()
     created_at: Date;
