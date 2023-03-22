@@ -83,6 +83,7 @@ module.exports = (app: Express, passport: any) => {
 
             response.status(200).json({
               token: "Bearer " + token,
+              role: payload.role
             });
           } else response.status(403).send("Invalid email or password");
         });

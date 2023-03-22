@@ -68,7 +68,7 @@ module.exports = (app: Express, passport: any) => {
         catch(err){
           response.status(500).send(err);
         }
-      }
+      }else response.sendStatus(401)
     }
   );
 
