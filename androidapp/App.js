@@ -60,7 +60,7 @@ export default function App() {
     <>
       <SafeAreaProvider>
         <NavigationContainer>
-          <Stack.Navigator
+          {/* <Stack.Navigator
             screenOptions={{
               header: ({navigation, route, options, back}) => {
                 const title = getHeaderTitle(options, route.name);
@@ -165,7 +165,7 @@ export default function App() {
                 )}
               </>
             )}
-          </Stack.Navigator>
+          </Stack.Navigator> */}
         </NavigationContainer>
         <Toast />
       </SafeAreaProvider>
