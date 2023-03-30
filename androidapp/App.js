@@ -13,10 +13,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {getHeaderTitle} from '@react-navigation/elements';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
-import {LoginLand} from './pages/Login/LoginLand';
-import {QRgen} from './pages/QR/QRgen';
-import QRScan from './pages/QR/QRScan';
 import {MMKV} from 'react-native-mmkv';
+import {LoginLand} from './screens/Login/LoginLand';
+import {QRgen} from './screens/QR/QRgen';
+import QRScan from './screens/QR/QRScan';
+import Register from './screens/Reg/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -56,11 +57,19 @@ export default function App() {
     allowFontScaling: false,
   };
 
+  const LoadingScreen = () => {
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  };
+
   return (
     <>
       <SafeAreaProvider>
         <NavigationContainer>
-          {/* <Stack.Navigator
+          <Stack.Navigator
             screenOptions={{
               header: ({navigation, route, options, back}) => {
                 const title = getHeaderTitle(options, route.name);
@@ -73,18 +82,7 @@ export default function App() {
               },
             }}>
             {isLoading ? (
-              <Stack.Screen
-                name="Splash"
-                component={() => {
-                  return (
-                    <>
-                      <View>
-                        <Text>Loading</Text>
-                      </View>
-                    </>
-                  );
-                }}
-              />
+              <Stack.Screen name="Splash" component={LoadingScreen} />
             ) : (
               <>
                 {isSignedIn ? (
@@ -138,14 +136,14 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                
-                    <Stack.Screen name="LoginLand">
+                    <Stack.Screen name="Register" component={Register} />
+                    {/* <Stack.Screen name="LoginLand">
                       {props => (
                         <>
                           <LoginLand {...props} setIsSignedIn={setIsSignedIn} />
                         </>
                       )}
-                    </Stack.Screen>
+                    </Stack.Screen> */}
                     <Stack.Screen name="QRScan">
                       {props => (
                         <>
@@ -153,7 +151,7 @@ export default function App() {
                         </>
                       )}
                     </Stack.Screen>
-                    
+
                     <Stack.Screen name="QRgen">
                       {props => (
                         <>
@@ -165,7 +163,7 @@ export default function App() {
                 )}
               </>
             )}
-          </Stack.Navigator> */}
+          </Stack.Navigator>
         </NavigationContainer>
         <Toast />
       </SafeAreaProvider>
