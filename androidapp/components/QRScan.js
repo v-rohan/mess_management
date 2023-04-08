@@ -1,3 +1,5 @@
+'use strict';
+
 import React, {Component} from 'react';
 
 import {
@@ -10,28 +12,18 @@ import {
 
 import QRCodeScanner from 'react-native-qrcode-scanner';
 import {RNCamera} from 'react-native-camera';
-import {useNavigation} from '@react-navigation/native';
 
-class QRScan extends React.Component {
+class QRScan extends Component {
+  onSuccess = e => {
+    Linking.openURL(e.data).catch(err =>
+      console.error('An error occured', err),
+    );
+  };
+
   render() {
-    const {navigate} = this.props.navigation;
     return (
       <QRCodeScanner
-        onRead={e => {
-          try {
-        //    console.log(e.data);
-            async function a() {
-              navigate({
-                name: 'Home',
-                params: {code: e.data},
-                merge: true,
-              });
-            }
-            a();
-          } catch (err) {
-            console.log(err);
-          }
-        }}
+        onRead={this.onSuccess}
         flashMode={RNCamera.Constants.FlashMode.torch}
         topContent={
           <Text style={styles.centerText}>
@@ -69,8 +61,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default function (props) {
-  const navigation = useNavigation();
-
-  return <QRScan {...props} navigation={navigation} />;
-}
+export default QRScan;

@@ -39,6 +39,7 @@ createConnection()
     passport.use(new AnonymousStrategy());
 
     // register express routes from defined application routes
+    require("./routes/codeRoutes")(app, passport);
     require("./routes/userRoutes")(app, passport);
     app.listen(port);
 
