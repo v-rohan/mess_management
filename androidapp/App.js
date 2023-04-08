@@ -1,23 +1,16 @@
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  Platform,
-  Text,
-  TextInput,
-} from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import {StyleSheet, View, Platform, Text, TextInput} from 'react-native';
 import {useState, useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
 import {getHeaderTitle} from '@react-navigation/elements';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
-import {LoginLand} from './pages/Login/LoginLand';
-import {QRgen} from './pages/QR/QRgen';
-import QRScan from './pages/QR/QRScan';
-import {Home} from './pages/Home/index';
 import {MMKV} from 'react-native-mmkv';
+import {LoginLand} from './screens/Login/LoginLand';
+import {QRgen} from './screens/QR/QRgen';
+import QRScan from './components/QRScan';
+import {Home} from './screens/Home/index';
+import Register from './screens/Reg/Register';
 
 const Stack = createNativeStackNavigator();
 
@@ -58,6 +51,14 @@ export default function App() {
     allowFontScaling: false,
   };
 
+  const LoadingScreen = () => {
+    return (
+      <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <Text>Loading...</Text>
+      </View>
+    );
+  };
+
   return (
     <>
       <SafeAreaProvider>
@@ -75,18 +76,7 @@ export default function App() {
               },
             }}>
             {isLoading ? (
-              <Stack.Screen
-                name="Splash"
-                component={() => {
-                  return (
-                    <>
-                      <View>
-                        <Text>Loading</Text>
-                      </View>
-                    </>
-                  );
-                }}
-              />
+              <Stack.Screen name="Splash" component={LoadingScreen} />
             ) : (
               <>
                 {isSignedIn ? (
@@ -112,10 +102,10 @@ export default function App() {
                         </>
                       )}
                     </Stack.Screen>
-                  
                   </>
                 ) : (
                   <>
+                    <Stack.Screen name="Registration" component={Register} />
                     <Stack.Screen name="LoginLand">
                       {props => (
                         <>
@@ -137,12 +127,4 @@ export default function App() {
       </SafeAreaProvider>
     </>
   );
-
-  // <View style={styles.container}>
-  //   <Text>Mess Manager, hello world!</Text>
-  //   <StatusBar style="auto" />
-  //   <View>
-  //   <QRCode value="hillybilly" />
-  //   </View>
-  // </View>
 }
