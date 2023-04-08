@@ -1,12 +1,4 @@
-import {
-  ImageBackground,
-  StyleSheet,
-  View,
-  Platform,
-  Text,
-  TextInput,
-} from 'react-native';
-import QRCode from 'react-native-qrcode-svg';
+import {StyleSheet, View, Platform, Text, TextInput} from 'react-native';
 import {useState, useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
@@ -16,7 +8,8 @@ import Toast from 'react-native-toast-message';
 import {MMKV} from 'react-native-mmkv';
 import {LoginLand} from './screens/Login/LoginLand';
 import {QRgen} from './screens/QR/QRgen';
-import QRScan from './screens/QR/QRScan';
+import QRScan from './components/QRScan';
+import {Home} from './screens/Home/index';
 import Register from './screens/Reg/Register';
 
 const Stack = createNativeStackNavigator();
@@ -25,6 +18,7 @@ export const storage = new MMKV();
 
 export default function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -87,63 +81,20 @@ export default function App() {
               <>
                 {isSignedIn ? (
                   <>
-                    <Stack.Screen name={'Home'} component={HomeScreen} />
-                    <Stack.Screen name={'Help'} component={HelpScreen} />
-                    <Stack.Screen name={'Share'} component={ShareScreen} />
-                    <Stack.Screen name={'Refer'} component={ReferScreen} />
-                    <Stack.Screen name={'ClickId'} component={ClickId} />
-                    <Stack.Screen name={'Search'} component={SearchScreen} />
-                    <Stack.Screen name={'AddBank'} component={AddPaymentBank} />
-                    <Stack.Screen
-                      name={'Notifications'}
-                      component={Notifications}
-                    />
-                    <Stack.Screen
-                      name={'Missing Claims'}
-                      component={MissingClaims}
-                    />
-                    <Stack.Screen
-                      name={'AddPaytm'}
-                      component={AddPaymentPaytm}
-                    />
-                    <Stack.Screen name="Account">
-                      {props => (
-                        <AccountScreen
-                          {...props}
-                          setIsSignedIn={setIsSignedIn}
-                        />
-                      )}
-                    </Stack.Screen>
-                    <Stack.Screen name={'AccountSettings'}>
-                      {props => (
-                        <AccountSettings
-                          {...props}
-                          isVerified={isVerfied}
-                          setVerified={setVerified}
-                        />
-                      )}
-                    </Stack.Screen>
-                    <Stack.Screen name={'Withdraw'} component={Withdraw} />
-                    <Stack.Screen name={'ViewAll'} component={ViewAll} />
-                    <Stack.Screen
-                      name={'ShowAllLinks'}
-                      component={ShowAllLinks}
-                    />
-                    <Stack.Screen
-                      name={'ViewInDetail'}
-                      component={ViewInDetail}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Stack.Screen name="Register" component={Register} />
-                    {/* <Stack.Screen name="LoginLand">
+                    <Stack.Screen name="QRgen">
                       {props => (
                         <>
-                          <LoginLand {...props} setIsSignedIn={setIsSignedIn} />
+                          <QRgen {...props} setIsSignedIn={setIsSignedIn} />
                         </>
                       )}
-                    </Stack.Screen> */}
+                    </Stack.Screen>
+                    <Stack.Screen name="Home">
+                      {props => (
+                        <>
+                          <Home {...props} setIsSignedIn={setIsSignedIn} />
+                        </>
+                      )}
+                    </Stack.Screen>
                     <Stack.Screen name="QRScan">
                       {props => (
                         <>
@@ -151,11 +102,18 @@ export default function App() {
                         </>
                       )}
                     </Stack.Screen>
-
-                    <Stack.Screen name="QRgen">
+                  </>
+                ) : (
+                  <>
+                    <Stack.Screen name="Registration" component={Register} />
+                    <Stack.Screen name="LoginLand">
                       {props => (
                         <>
-                          <QRgen {...props} setIsSignedIn={setIsSignedIn} />
+                          <LoginLand
+                            {...props}
+                            setIsSignedIn={setIsSignedIn}
+                            setIsAdmin={setIsAdmin}
+                          />
                         </>
                       )}
                     </Stack.Screen>
@@ -169,12 +127,4 @@ export default function App() {
       </SafeAreaProvider>
     </>
   );
-
-  // <View style={styles.container}>
-  //   <Text>Mess Manager, hello world!</Text>
-  //   <StatusBar style="auto" />
-  //   <View>
-  //   <QRCode value="hillybilly" />
-  //   </View>
-  // </View>
 }

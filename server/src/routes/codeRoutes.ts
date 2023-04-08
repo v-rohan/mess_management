@@ -32,7 +32,7 @@ module.exports = (app: Express, passport: any) => {
               .save(newCode)
               .then((code) => {
                 console.log(code);
-                response.sendStatus(200)
+                response.status(200).json({code: code.sessionId})
               })
               .catch((error) => {
                 throw error;
@@ -49,7 +49,7 @@ module.exports = (app: Express, passport: any) => {
   );
 
   app.get(
-    "/verify:id",
+    "/verify/:id",
     passport.authenticate("jwt", { session: false }),
     async (
       request: IGetUserAuthInfoRequest,

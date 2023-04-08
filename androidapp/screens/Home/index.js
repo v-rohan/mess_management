@@ -12,10 +12,10 @@ import {
   TextInput,
   Button,
 } from 'react-native';
-import {register, login} from '../../api/SignInApiCalls';
+import {register, login, scan} from '../../api/SignInApiCalls';
 import {storage} from '../../App';
 
-export const LoginLand = ({navigation, setIsSignedIn, setIsAdmin}) => {
+export const Home = ({navigation, route, setIsSignedIn}) => {
   const styles = StyleSheet.create({
     defStyle: {
       flex: 1,
@@ -149,37 +149,31 @@ export const LoginLand = ({navigation, setIsSignedIn, setIsAdmin}) => {
       backgroundColor: 'transparent',
     },
   });
-  const [email, onChangeEmail] = React.useState('');
-  const [pwd, onChangePwd] = React.useState('');
+  const [code, onChangeCode] = React.useState('');
 
   // useEffect(()=>{
   //   setInterval(()=>{console.log(storage.getString('token'))}, 1000)
   // })
 
-  const handleRegister = async () => {
-    const data = {email, password: pwd};
-    const res = await register(data);
-    if (res.status === 200) {
-      const {token} = await res.json();
-      storage.set('token', token);
-      //await AsyncStorage.setItem("token", token);
+  React.useEffect(() => {
+    if (route.params?.code) {
+      console.log('scanb', route.params.code);
+      onChangeCode(route.params.code);
+      route.params.code = null;
     }
+  }, [route.params?.code]);
+
+  const handleScan = async () => {
+    navigation.navigate('QRScan');
   };
 
-  const handleLogin = async () => {
-    const data = {email, password: pwd};
-    const res = await login(data);
-    if (res.status === 200) {
-      const a = await res.json();
-      storage.set('token', a.token);
-      console.log(a);
-      if (a.role === 'admin') {
-        setIsAdmin(true);
-      }
-      setIsSignedIn(true);
-      //await AsyncStorage.setItem("token", token);
+  useEffect(() => {
+    if (code !== '') {
+      console.log(code);
+      scan(code);
+      onChangeCode('');
     }
-  };
+  }, [code]);
 
   return (
     <>
@@ -197,10 +191,10 @@ export const LoginLand = ({navigation, setIsSignedIn, setIsAdmin}) => {
           alignItems: 'center',
           flexDirection: 'column',
         }}>
-        <Text style={{marginTop: 30, fontSize: 20}}>Login/Register</Text>
+        <Text style={{marginTop: 30, fontSize: 20}}>Home</Text>
         <View
           style={{
-            height: 450,
+            height: 200,
             width: 340,
             marginTop: 20,
             backgroundColor: '#fff',
@@ -209,46 +203,7 @@ export const LoginLand = ({navigation, setIsSignedIn, setIsAdmin}) => {
             alignContent: 'center',
           }}>
           <View style={{height: 50}} />
-          <View
-            style={{
-              marginTop: 15,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <Text style={{fontSize: 20}}>E-mail</Text>
-          </View>
-          <View
-            style={{
-              marginTop: 15,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <TextInput
-              style={styles.input}
-              value={email}
-              onChangeText={onChangeEmail}
-            />
-          </View>
-          <View
-            style={{
-              marginTop: 15,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <Text style={{fontSize: 20}}>Password</Text>
-          </View>
-          <View
-            style={{
-              marginTop: 15,
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <TextInput
-              style={styles.input}
-              onChangeText={onChangePwd}
-              value={pwd}
-            />
-          </View>
+
           <View
             style={{
               flexDirection: 'row',
@@ -258,16 +213,9 @@ export const LoginLand = ({navigation, setIsSignedIn, setIsAdmin}) => {
             <Button
               style={{width: 100}}
               onPress={() => {
-                handleRegister();
+                handleScan();
               }}
-              title="REGISTER"
-            />
-            <Button
-              style={{width: 100}}
-              onPress={() => {
-                handleLogin();
-              }}
-              title="LOGIN"
+              title="SCAN"
             />
           </View>
         </View>
