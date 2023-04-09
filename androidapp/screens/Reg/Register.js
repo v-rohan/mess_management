@@ -4,7 +4,7 @@ import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
 
-const Register = () => {
+const Register = ({navigation}) => {
   const [regNo, setRegNo] = useState();
   const [email, setEmail] = useState();
   const [pwd, setPwd] = useState();
@@ -18,6 +18,10 @@ const Register = () => {
     setPwd('');
   };
 
+  const handleBackButton = () => {
+    navigation.goBack();
+  };
+
   return (
     <>
       <StatusBar
@@ -25,10 +29,9 @@ const Register = () => {
         translucent={true}
         backgroundColor="transparent"
       />
-      <View
-        style={styles.background}>
+      <View style={styles.background}>
         <View style={{marginTop: 36}}>
-          <BackButton onPress={() => {}} />
+          <BackButton onPress={handleBackButton} />
         </View>
         <View style={styles.titleContainer}>
           <Text style={{color: 'black', fontSize: 36}}>Create Your</Text>
