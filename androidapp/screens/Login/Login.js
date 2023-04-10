@@ -11,17 +11,14 @@ import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
 
-const Register = ({navigation}) => {
+const Login = ({navigation}) => {
   const [regNo, setRegNo] = useState();
-  const [email, setEmail] = useState();
   const [pwd, setPwd] = useState();
 
-  const handleRegister = () => {
+  const handleLogin = () => {
     console.log(regNo);
-    console.log(email);
     console.log(pwd);
     setRegNo('');
-    setEmail('');
     setPwd('');
   };
 
@@ -30,7 +27,11 @@ const Register = ({navigation}) => {
   };
 
   const handleSignIn = () => {
-    navigation.navigate('LoginLand');
+    navigation.navigate('Registration');
+  };
+
+  const handleForgetPwd = () => {
+    navigation.navigate('ForgotPassword');
   };
 
   return (
@@ -45,7 +46,7 @@ const Register = ({navigation}) => {
           <BackButton onPress={handleBackButton} />
         </View>
         <View style={styles.titleContainer}>
-          <Text style={styles.title}>Create Your{'\n'}Account</Text>
+          <Text style={styles.title}>Login To Your{'\n'}Account</Text>
         </View>
         <View style={styles.inputContainer}>
           <Input
@@ -55,12 +56,6 @@ const Register = ({navigation}) => {
             iconName="user"
           />
           <Input
-            inputText={email}
-            setInputText={setEmail}
-            placeholder="Email"
-            iconName="envelope"
-          />
-          <Input
             inputText={pwd}
             setInputText={setPwd}
             placeholder="Password"
@@ -68,15 +63,24 @@ const Register = ({navigation}) => {
             secureTextEntry={true}
           />
         </View>
+        <Pressable
+          style={({pressed}) =>
+            pressed
+              ? [styles.forgetPwdTxtContainer, styles.forgetPwdTxtPressed]
+              : styles.forgetPwdTxtContainer
+          }
+          onPress={handleForgetPwd}>
+          <Text style={styles.forgetPwdTxt}>Forgot Password?</Text>
+        </Pressable>
         <View style={styles.btnContainer}>
-          <Button onPress={handleRegister}>REGISTER</Button>
+          <Button onPress={handleLogin}>LOGIN</Button>
         </View>
         <View style={styles.txtContainer}>
-          <Text style={styles.txt}>Already Have An Account? </Text>
+          <Text style={styles.txt}>Don't have an account? </Text>
           <Pressable
             style={({pressed}) => pressed && styles.pressedStyle}
             onPress={handleSignIn}>
-            <Text style={[styles.txt, styles.txtLink]}>Sign In</Text>
+            <Text style={[styles.txt, styles.txtLink]}>Sign Up</Text>
           </Pressable>
         </View>
       </View>
@@ -106,6 +110,21 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     gap: 16,
   },
+  forgetPwdTxtContainer: {
+    alignSelf: 'flex-start',
+    marginTop: -12,
+    marginBottom: 24,
+    marginLeft: 8,
+  },
+  forgetPwdTxt: {
+    color: '#F16522',
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: '500',
+  },
+  forgetPwdTxtPressed: {
+    opacity: 0.8,
+  },
   btnContainer: {
     marginVertical: 16,
   },
@@ -124,9 +143,9 @@ const styles = StyleSheet.create({
   },
   pressedStyle: {
     opacity: 0.8,
-    borderBottomColor: "#F16522",
+    borderBottomColor: '#F16522',
     borderBottomWidth: 1,
   },
 });
 
-export default Register;
+export default Login;

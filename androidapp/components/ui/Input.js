@@ -30,11 +30,18 @@ export default Input;
 
 const styles = StyleSheet.create({
   inputContainer: {
-    // borderWidth: 1,
-    // borderColor: 'yellow',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  iconContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: 'white',
+    height: 48,
+    width: 48,
+    borderTopLeftRadius: 8,
+    borderBottomLeftRadius: 8,
   },
   input: {
     flex: 1,
@@ -43,11 +50,5 @@ const styles = StyleSheet.create({
     color: 'black',
     borderTopRightRadius: 8,
     borderBottomRightRadius: 8,
-  },
-  iconContainer: {
-    backgroundColor: 'white',
-    padding: 12,
-    borderTopLeftRadius: 8,
-    borderBottomLeftRadius: 8,
   },
 });

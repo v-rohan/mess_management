@@ -15,6 +15,8 @@ import TitleScreen from './screens/Onboarding/TitleScreen';
 import Onboarding1 from './screens/Onboarding/Onboarding1';
 import Onboarding2 from './screens/Onboarding/OnBoarding2';
 import Onboarding3 from './screens/Onboarding/Onboarding3';
+import Login from './screens/Login/Login';
+import ForgotPassword from './screens/Password/ForgotPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -109,11 +111,6 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                    <Stack.Screen name="Title" component={TitleScreen} />
-                    <Stack.Screen name="Onboarding1" component={Onboarding1} />
-                    <Stack.Screen name="Onboarding2" component={Onboarding2} />
-                    <Stack.Screen name="Onboarding3" component={Onboarding3} />
-                    <Stack.Screen name="Registration" component={Register} />
                     <Stack.Screen name="LoginLand">
                       {props => (
                         <>
@@ -121,10 +118,20 @@ export default function App() {
                             {...props}
                             setIsSignedIn={setIsSignedIn}
                             setIsAdmin={setIsAdmin}
-                          />
+                            />
                         </>
                       )}
                     </Stack.Screen>
+                    <Stack.Screen name="Title" component={TitleScreen} />
+                    <Stack.Screen name="Onboarding1" component={Onboarding1} />
+                    <Stack.Screen name="Onboarding2" component={Onboarding2} />
+                    <Stack.Screen name="Onboarding3" component={Onboarding3} />
+                    <Stack.Screen name="Registration" component={Register} />
+                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen
+                      name="ForgotPassword"
+                      component={ForgotPassword}
+                    />
                   </>
                 )}
               </>
