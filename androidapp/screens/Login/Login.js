@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
+import Colors from '../../constants/Colors';
 
 const Login = ({navigation}) => {
   const [regNo, setRegNo] = useState();
@@ -66,7 +67,7 @@ const Login = ({navigation}) => {
         <Pressable
           style={({pressed}) =>
             pressed
-              ? [styles.forgetPwdTxtContainer, styles.forgetPwdTxtPressed]
+              ? [styles.forgetPwdTxtContainer, styles.pressedStyle]
               : styles.forgetPwdTxtContainer
           }
           onPress={handleForgetPwd}>
@@ -78,7 +79,11 @@ const Login = ({navigation}) => {
         <View style={styles.txtContainer}>
           <Text style={styles.txt}>Don't have an account? </Text>
           <Pressable
-            style={({pressed}) => pressed && styles.pressedStyle}
+            style={({pressed}) =>
+              pressed
+                ? [styles.linkContainer, styles.pressedStyle]
+                : styles.linkContainer
+            }
             onPress={handleSignIn}>
             <Text style={[styles.txt, styles.txtLink]}>Sign Up</Text>
           </Pressable>
@@ -115,15 +120,14 @@ const styles = StyleSheet.create({
     marginTop: -12,
     marginBottom: 24,
     marginLeft: 8,
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
   forgetPwdTxt: {
-    color: '#F16522',
+    color: Colors.primary60,
     fontSize: 12,
     lineHeight: 16,
     fontWeight: '500',
-  },
-  forgetPwdTxtPressed: {
-    opacity: 0.8,
   },
   btnContainer: {
     marginVertical: 16,
@@ -139,11 +143,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   txtLink: {
-    color: '#F16522',
+    color: Colors.primary60,
+  },
+  linkContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
   pressedStyle: {
     opacity: 0.8,
-    borderBottomColor: '#F16522',
+    borderBottomColor: Colors.primary60,
     borderBottomWidth: 1,
   },
 });

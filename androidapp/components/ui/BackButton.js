@@ -1,6 +1,7 @@
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Colors from "../../constants/Colors";
 
 const BackButton = ({onPress}) => {
   return (
@@ -12,7 +13,7 @@ const BackButton = ({onPress}) => {
             : styles.buttonInnerContainer
         }
         onPress={onPress}>
-        <Icon name="arrow-left" size={24} color="#F16522" />
+        <Icon name="arrow-left" size={24} color={Colors.primary60} />
       </Pressable>
     </View>
   );
@@ -27,14 +28,14 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   buttonInnerContainer: {
-    backgroundColor: '#FFDBCE',
+    backgroundColor: Colors.primary90,
     padding: 8,
   },
   buttonText: {
-    color: '#F16522',
+    color: Colors.primary60,
     textAlign: 'center',
   },
   pressed: {
-    backgroundColor: '#FFB598',
+    backgroundColor: Colors.primary90,
   },
 });

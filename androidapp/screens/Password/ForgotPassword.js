@@ -2,11 +2,20 @@ import {Dimensions, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 import BackButton from '../../components/ui/BackButton';
 import Card from '../../components/ui/Card';
+import Colors from '../../constants/Colors';
 
 const ForgotPassword = ({navigation}) => {
   const handleBackButton = () => {
     navigation.goBack();
   };
+
+  const handleEmailCard = () => {
+    navigation.navigate("VerificationEmail");
+  }
+
+  const handlePhoneCard = () => {
+    navigation.navigate("VerificationPhone");
+  }
 
   return (
     <>
@@ -25,8 +34,20 @@ const ForgotPassword = ({navigation}) => {
         <Text style={styles.description}>
           Select which contact detail should we use{'\n'}to reset your password
         </Text>
-        <Card iconName="envelope-o" title="Email" description="Code sent to your email" />
-        <Card iconName="phone" title="Phone" description="Code sent to your phone number" />
+        <View style={styles.optionsContainer}>
+          <Card
+            iconName="envelope-o"
+            title="Email"
+            description="Code sent to your email"
+            onPress={handleEmailCard}
+          />
+          <Card
+            iconName="phone"
+            title="Phone"
+            description="Code sent to your phone number"
+            onPress={handlePhoneCard}
+          />
+        </View>
       </View>
     </>
   );
@@ -54,8 +75,12 @@ const styles = StyleSheet.create({
   },
   description: {
     marginVertical: 4,
-    color: '#998E8B',
+    color: Colors.neutral60,
     fontSize: 12,
     lineHeight: 16,
+  },
+  optionsContainer :{
+    marginVertical: 24,
+    rowGap: 24,
   },
 });

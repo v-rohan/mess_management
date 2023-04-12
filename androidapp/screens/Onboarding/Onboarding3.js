@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import React from 'react';
 import Button from '../../components/ui/Button';
+import Colors from '../../constants/Colors';
 
 const Onboarding3 = ({navigation}) => {
   const handlePress = () => {
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
     letterSpacing: 0.5,
-    color: '#998E8B',
+    color: Colors.neutral60,
     margin: 4,
   },
   btnContainer: {

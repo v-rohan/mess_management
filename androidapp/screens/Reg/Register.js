@@ -10,6 +10,7 @@ import React, {useState} from 'react';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
+import Colors from '../../constants/Colors';
 
 const Register = ({navigation}) => {
   const [regNo, setRegNo] = useState();
@@ -74,7 +75,11 @@ const Register = ({navigation}) => {
         <View style={styles.txtContainer}>
           <Text style={styles.txt}>Already Have An Account? </Text>
           <Pressable
-            style={({pressed}) => pressed && styles.pressedStyle}
+            style={({pressed}) =>
+              pressed
+                ? [styles.linkContainer, styles.pressedStyle]
+                : styles.linkContainer
+            }
             onPress={handleSignIn}>
             <Text style={[styles.txt, styles.txtLink]}>Sign In</Text>
           </Pressable>
@@ -120,12 +125,15 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   txtLink: {
-    color: '#F16522',
+    color: Colors.primary60,
+  },
+  linkContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#f0f0f0',
   },
   pressedStyle: {
     opacity: 0.8,
-    borderBottomColor: "#F16522",
-    borderBottomWidth: 1,
+    borderBottomColor: Colors.primary60,
   },
 });
 

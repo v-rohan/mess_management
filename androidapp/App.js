@@ -17,6 +17,7 @@ import Onboarding2 from './screens/Onboarding/OnBoarding2';
 import Onboarding3 from './screens/Onboarding/Onboarding3';
 import Login from './screens/Login/Login';
 import ForgotPassword from './screens/Password/ForgotPassword';
+import Verification from './screens/Verification/Verification';
 
 const Stack = createNativeStackNavigator();
 
@@ -118,20 +119,40 @@ export default function App() {
                             {...props}
                             setIsSignedIn={setIsSignedIn}
                             setIsAdmin={setIsAdmin}
-                            />
+                          />
                         </>
                       )}
                     </Stack.Screen>
+                    <Stack.Screen name="Registration" component={Register} />
+                    <Stack.Screen name="Login" component={Login} />
                     <Stack.Screen name="Title" component={TitleScreen} />
                     <Stack.Screen name="Onboarding1" component={Onboarding1} />
                     <Stack.Screen name="Onboarding2" component={Onboarding2} />
                     <Stack.Screen name="Onboarding3" component={Onboarding3} />
-                    <Stack.Screen name="Registration" component={Register} />
-                    <Stack.Screen name="Login" component={Login} />
                     <Stack.Screen
                       name="ForgotPassword"
                       component={ForgotPassword}
                     />
+                    <Stack.Screen name="VerificationEmail">
+                      {props => (
+                        <Verification
+                          {...props}
+                          title="Email"
+                          text="email"
+                          content="a@gmail.com"
+                        />
+                      )}
+                    </Stack.Screen>
+                    <Stack.Screen name="VerificationPhone">
+                      {props => (
+                        <Verification
+                          {...props}
+                          title="Phone Number"
+                          text="number"
+                          content="+91 00000 11111"
+                        />
+                      )}
+                    </Stack.Screen>
                   </>
                 )}
               </>

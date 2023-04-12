@@ -12,6 +12,7 @@ import TopRightDark from '../../assets/svgs/TopRightDark';
 import TopRightLight from '../../assets/svgs/TopRightLight';
 import BottomLeftDark from '../../assets/svgs/BottomLeftDark';
 import BottomLeftLight from '../../assets/svgs/BottomLeftLight';
+import Colors from '../../constants/Colors';
 
 const TitleScreen = ({navigation}) => {
   const handlePress = () => {
@@ -80,7 +81,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 36,
-    color: '#F16522',
+    color: Colors.primary60,
   },
   subTitle: {
     fontSize: 12,
