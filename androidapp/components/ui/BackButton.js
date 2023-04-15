@@ -1,4 +1,4 @@
-import {StyleSheet, Text, View, Pressable} from 'react-native';
+import {StyleSheet, View, Pressable} from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from "../../constants/Colors";

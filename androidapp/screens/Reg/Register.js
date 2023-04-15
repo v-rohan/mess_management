@@ -6,7 +6,7 @@ import {
   StyleSheet,
   Pressable,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
@@ -16,6 +16,9 @@ const Register = ({navigation}) => {
   const [regNo, setRegNo] = useState();
   const [email, setEmail] = useState();
   const [pwd, setPwd] = useState();
+
+  const emailRef = useRef();
+  const pwdRef = useRef();
 
   const handleRegister = () => {
     console.log(regNo);
@@ -50,23 +53,27 @@ const Register = ({navigation}) => {
         </View>
         <View style={styles.inputContainer}>
           <Input
-            inputText={regNo}
-            setInputText={setRegNo}
+            value={regNo}
+            onChangeText={setRegNo}
             placeholder="Registration Number"
             iconName="user"
+            nextRef={emailRef}
           />
           <Input
-            inputText={email}
-            setInputText={setEmail}
+            value={email}
+            onChangeText={setEmail}
             placeholder="Email"
             iconName="envelope"
+            ref={emailRef}
+            nextRef={pwdRef}
           />
           <Input
-            inputText={pwd}
-            setInputText={setPwd}
+            value={pwd}
+            onChangeText={setPwd}
             placeholder="Password"
             iconName="lock"
             secureTextEntry={true}
+            ref={pwdRef}
           />
         </View>
         <View style={styles.btnContainer}>

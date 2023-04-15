@@ -10,9 +10,19 @@ import React from 'react';
 import Button from '../../components/ui/Button';
 import Colors from '../../constants/Colors';
 
-const Onboarding2 = ({navigation}) => {
+const Onboarding = ({route, navigation, imgSrc, imgAspectRatio}) => {
   const handlePress = () => {
-    navigation.navigate('Onboarding3');
+    const {onboardScreenId} = route.params;
+
+    // console.log(onboardScreenId);
+
+    if (onboardScreenId <= 2) {
+      navigation.navigate(`Onboarding${onboardScreenId + 1}`, {
+        onboardScreenId: onboardScreenId + 1,
+      });
+    } else {
+      navigation.navigate('Registration');
+    }
   };
 
   return (
@@ -26,15 +36,15 @@ const Onboarding2 = ({navigation}) => {
         <View style={styles.content}>
           <View style={styles.imageContainer}>
             <Image
-              style={styles.image}
-              source={require('../../assets/images/qr-nobg.png')}
+              style={[styles.image, {aspectRatio: imgAspectRatio}]}
+              source={imgSrc}
             />
           </View>
           <View style={styles.featureContainer}>
-            <Text style={styles.title}>Scan on the Go</Text>
+            <Text style={styles.title}>Quick and Seamless</Text>
             <Text style={styles.description}>
-              Have your meal just by scanning{'\n'}the QR code with the
-              application
+              We make the process effortless{'\n'}for students and
+              administration
             </Text>
           </View>
           <View style={styles.btnContainer}>
@@ -46,7 +56,7 @@ const Onboarding2 = ({navigation}) => {
   );
 };
 
-export default Onboarding2;
+export default Onboarding;
 
 const styles = StyleSheet.create({
   background: {
@@ -66,7 +76,7 @@ const styles = StyleSheet.create({
     width: '75%',
   },
   image: {
-    aspectRatio: 0.95,
+    aspectRatio: 1.5,
     resizeMode: 'contain',
   },
   featureContainer: {

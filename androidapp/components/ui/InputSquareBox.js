@@ -1,4 +1,4 @@
-import {StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, TextInput} from 'react-native';
 import React, {useState} from 'react';
 import Colors from '../../constants/Colors';
 
@@ -16,11 +16,7 @@ const InputSquareBox = React.forwardRef(
 
     return (
       <TextInput
-        style={
-          isFocus
-            ? [styles.input, styles.inputFocus]
-            : [styles.input, styles.inputBlur]
-        }
+        style={isFocus ? [styles.input, styles.inputFocus] : styles.input}
         inputMode="numeric"
         maxLength={1}
         caretHidden
@@ -36,13 +32,6 @@ const InputSquareBox = React.forwardRef(
           }
         }}
         ref={ref}
-        // returnKeyType="next"
-        // onSubmitEditing={() => {
-        //   if (nextRef) {
-        //     nextRef.current.focus();
-        //   }
-        // }}
-        // blurOnSubmit={nextRef ? false : true}
       />
     );
   },
