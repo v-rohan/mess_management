@@ -51,6 +51,8 @@ const ResetPassword = () => {
       <Modal
         isModalVisible={isModalVisible}
         setIsModalVisible={setIsModalVisible}
+        title="Incorrect password match"
+        description="Please re-enter your passwords correctly."
       />
       <View style={styles.background}>
         <View style={styles.backBtnContainer}>

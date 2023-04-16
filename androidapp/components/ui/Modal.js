@@ -3,7 +3,7 @@ import React from 'react';
 import Button from './Button';
 import Colors from '../../constants/Colors';
 
-const Modal = ({isModalVisible, setIsModalVisible}) => {
+const Modal = ({isModalVisible, setIsModalVisible, title, description}) => {
   const handleButton = () => {
     setIsModalVisible(!isModalVisible);
   };
@@ -13,11 +13,11 @@ const Modal = ({isModalVisible, setIsModalVisible}) => {
       <View style={styles.container}>
         <View style={styles.modal}>
           <View style={styles.titleContainer}>
-            <Text style={styles.title}>Incorrect password match</Text>
+            <Text style={styles.title}>{title}</Text>
           </View>
           <View style={styles.descContainer}>
             <Text style={styles.description}>
-              Please re-enter your passwords correctly
+              {description}
             </Text>
           </View>
           <View style={styles.btnContainer}>
