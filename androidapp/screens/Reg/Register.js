@@ -42,7 +42,7 @@ const Register = ({navigation}) => {
       <StatusBar
         barStyle="dark-content"
         translucent={true}
-        backgroundColor="transparent"
+        backgroundColor="#f0f0f0"
       />
       <View style={styles.background}>
         <View style={styles.backBtnContainer}>
@@ -64,6 +64,7 @@ const Register = ({navigation}) => {
             onChangeText={setEmail}
             placeholder="Email"
             iconName="envelope"
+            keyboardType="email-address"
             ref={emailRef}
             nextRef={pwdRef}
           />

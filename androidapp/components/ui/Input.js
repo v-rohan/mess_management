@@ -5,7 +5,7 @@ import Colors from '../../constants/Colors';
 
 const Input = React.forwardRef(
   (
-    {value, onChangeText, placeholder, iconName, secureTextEntry, nextRef},
+    {value, onChangeText, placeholder, iconName, nextRef, ...props},
     ref,
   ) => {
     const [isFocus, setIsFocus] = useState(false);
@@ -42,7 +42,7 @@ const Input = React.forwardRef(
           cursorColor={Colors.primary60}
           placeholder={isFocus ? '' : placeholder}
           placeholderTextColor={Colors.neutral80}
-          secureTextEntry={secureTextEntry}
+          {...props}
           value={value}
           onChangeText={value => onChangeText(value)}
           onFocus={handleOnFocus}

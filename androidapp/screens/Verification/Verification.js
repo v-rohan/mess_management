@@ -40,7 +40,7 @@ const Verification = ({route, navigation, title, text, content}) => {
       <StatusBar
         barStyle="dark-content"
         translucent={true}
-        backgroundColor="transparent"
+        backgroundColor="#f0f0f0"
       />
       <View>
         <View style={styles.background}>

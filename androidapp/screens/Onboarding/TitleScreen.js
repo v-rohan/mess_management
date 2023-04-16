@@ -24,7 +24,7 @@ const TitleScreen = ({navigation}) => {
       <StatusBar
         barStyle="dark-content"
         translucent={true}
-        backgroundColor="transparent"
+        backgroundColor="#f0f0f0"
       />
       <TouchableWithoutFeedback style={{}} onPress={handlePress}>
         <View style={styles.background}>

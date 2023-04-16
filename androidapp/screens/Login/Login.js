@@ -40,7 +40,7 @@ const Login = ({navigation}) => {
       <StatusBar
         barStyle="dark-content"
         translucent={true}
-        backgroundColor="transparent"
+        backgroundColor="#f0f0f0"
       />
       <View style={styles.background}>
         <View style={styles.backBtnContainer}>

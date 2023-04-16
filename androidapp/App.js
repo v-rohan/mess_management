@@ -16,6 +16,8 @@ import Onboarding from './screens/Onboarding/Onboarding';
 import Login from './screens/Login/Login';
 import ForgotPassword from './screens/Password/ForgotPassword';
 import Verification from './screens/Verification/Verification';
+import PhoneNo from './screens/PhoneNo/PhoneNo';
+import ResetPassword from './screens/Password/ResetPassword';
 
 const Stack = createNativeStackNavigator();
 
@@ -110,7 +112,7 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                    <Stack.Screen name="LoginLand">
+                    {/* <Stack.Screen name="LoginLand">
                       {props => (
                         <>
                           <LoginLand
@@ -150,9 +152,9 @@ export default function App() {
                           imgAspectRatio={1.125}
                         />
                       )}
-                    </Stack.Screen>
-                    <Stack.Screen name="Registration" component={Register} />
-                    <Stack.Screen name="Login" component={Login} />
+                    </Stack.Screen> */}
+                    {/* <Stack.Screen name="Registration" component={Register} /> */}
+                    {/* <Stack.Screen name="Login" component={Login} />
                     <Stack.Screen
                       name="ForgotPassword"
                       component={ForgotPassword}
@@ -176,7 +178,12 @@ export default function App() {
                           content="+91 00000 11111"
                         />
                       )}
-                    </Stack.Screen>
+                    </Stack.Screen> */}
+                    {/* <Stack.Screen name="PhoneNo" component={PhoneNo} /> */}
+                    <Stack.Screen
+                      name="ResetPassword"
+                      component={ResetPassword}
+                    />
                   </>
                 )}
               </>
