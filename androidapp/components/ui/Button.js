@@ -1,5 +1,6 @@
 import {StyleSheet, Text, View, Pressable} from 'react-native';
 import React from 'react';
+import Colors from '../../constants/Colors';
 
 const Button = ({children, onPress, isSecondary}) => {
   const buttonInnerContainerStyle = isSecondary
@@ -36,12 +37,12 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   primaryButtonInnerContainer: {
-    backgroundColor: '#F16522',
+    backgroundColor: Colors.primary60,
     paddingVertical: 10,
     paddingHorizontal: 24,
   },
   secondaryButtonInnerContainer: {
-    backgroundColor: '#FFDBCE',
+    backgroundColor: Colors.primary90,
     paddingVertical: 10,
     paddingHorizontal: 24,
   },
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   secondaryButtonText: {
-    color: '#F16522',
+    color: Colors.primary60,
     fontSize: 14,
     fontWeight: '500',
     textAlign: 'center',
@@ -61,6 +62,6 @@ const styles = StyleSheet.create({
     opacity: 0.85,
   },
   secondaryPressed: {
-    backgroundColor: '#FFB598',
+    backgroundColor: Colors.primary80,
   },
 });
