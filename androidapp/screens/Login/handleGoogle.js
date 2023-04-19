@@ -2,14 +2,14 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import {appLoginOrRegister} from '../../api/auth';
-import AsyncStorage from '@react-native-community/async-storage';
-import Toast from 'react-native-toast-message';
-import Config from 'react-native-config';
+import { appLoginOrRegister } from '../../api/SignInApiCalls';
+import { storage } from '../../App';
+import {ANDROID_GOOGLE_CLIENT_ID} from '@env';
+
 
 export const handleGoogleLogin = async setIsSignedIn => {
   GoogleSignin.configure({
-    webClientId: Config.ANDROID_GOOGLE_CLIENT_ID,
+    webClientId: ANDROID_GOOGLE_CLIENT_ID,
     offlineAccess: true,
     forceCodeForRefreshToken: true,
     profileImageSize: 120,
@@ -22,19 +22,12 @@ export const handleGoogleLogin = async setIsSignedIn => {
     console.log(res.status);
     if (res.status === 200) {
       const {token} = await res.json();
-      await AsyncStorage.setItem('token', token);
-      Toast.show({
-        type: 'success',
-        text1: 'Welcome back to CashBackDuniya',
-      });
+      storage.set('token', token);
+
       setIsSignedIn(true);
       console.log('Logged In successfully');
     } else {
-      Toast.show({
-        type: 'error',
-        text1: 'Oops!',
-        text2: 'Kindly check your credentials again!',
-      });
+      console.log('error!!');
     }
     // console.log(await GoogleSignin.getTokens());
   } catch (error) {

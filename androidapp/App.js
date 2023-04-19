@@ -156,8 +156,20 @@ export default function App() {
                         />
                       )}
                     </Stack.Screen>
-                    <Stack.Screen name="Registration" component={Register} />
-                    <Stack.Screen name="Login" component={Login} />
+                    <Stack.Screen name="Registration">
+                      {props => (
+                        <>
+                          <Register {...props} setIsSignedIn={setIsSignedIn} setIsAdmin={setIsAdmin} />
+                        </>
+                      )}
+                    </Stack.Screen>
+                    <Stack.Screen name="Login">
+                      {props => (
+                        <>
+                          <Login {...props} setIsSignedIn={setIsSignedIn} setIsAdmin={setIsAdmin} />
+                        </>
+                      )}
+                    </Stack.Screen>
                     <Stack.Screen
                       name="ForgotPassword"
                       component={ForgotPassword}
