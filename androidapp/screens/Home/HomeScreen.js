@@ -10,6 +10,7 @@ import React from 'react';
 import Colors from '../../constants/Colors';
 import Button from '../../components/ui/Button';
 import IconButton from '../../components/ui/IconButton';
+import Nav from '../../components/ui/Nav';
 
 const HomeScreen = ({isRegistered, isStudent}) => {
   return (
@@ -85,6 +86,20 @@ const HomeScreen = ({isRegistered, isStudent}) => {
             </>
           )}
         </View>
+        {isRegistered && (
+          <Nav
+            buttons={[
+              {
+                text: 'Notifications',
+                iconName: 'notifications-outline',
+              },
+              {
+                text: 'Settings',
+                iconName: 'settings-outline',
+              },
+            ]}
+          />
+        )}
       </View>
     </>
   );
@@ -99,6 +114,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
     padding: 16,
     alignItems: 'center',
+    rowGap: 24,
   },
   card: {
     marginTop: '20%',
@@ -185,22 +201,5 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
     width: '50%',
-  },
-  pressableContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    columnGap: 4,
-    padding: 8,
-    borderRadius: 10,
-    backgroundColor: Colors.primary90,
-  },
-  pressableText: {
-    color: Colors.primary60,
-    fontSize: 16,
-    lineHeight: 20,
-  },
-  pressableContainerPressed: {
-    backgroundColor: Colors.primary80,
   },
 });

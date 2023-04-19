@@ -114,8 +114,7 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                    <Stack.Screen name="HomeScreen" component={HomeScreen} />
-                    <Stack.Screen name="LoginLand">
+                    {/* <Stack.Screen name="LoginLand">
                       {props => (
                         <>
                           <LoginLand
@@ -190,7 +189,16 @@ export default function App() {
                     <Stack.Screen
                       name="ResetPasswordSuccess"
                       component={PasswordResetSuccess}
-                    />
+                    /> */}
+                    <Stack.Screen name="HomeScreen">
+                      {props => (
+                        <HomeScreen
+                          {...props}
+                          isRegistered={{}}
+                          isStudent={{}}
+                        />
+                      )}
+                    </Stack.Screen>
                   </>
                 )}
               </>
