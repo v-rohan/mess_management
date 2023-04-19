@@ -10,9 +10,17 @@ import React from 'react';
 import Colors from '../../constants/Colors';
 import Button from '../../components/ui/Button';
 import IconButton from '../../components/ui/IconButton';
-import Nav from '../../components/ui/Nav';
 
-const HomeScreen = ({isRegistered, isStudent}) => {
+const HomeScreen = ({navigation, isRegistered, isStudent}) => {
+  const handleLogoutButton = () => {
+    console.log('LOGOUT');
+  };
+
+  const handleProfileButton = () => {
+    console.log('TO PROFILE');
+    navigation.navigate("Account");
+  };
+
   return (
     <>
       <StatusBar
@@ -21,6 +29,13 @@ const HomeScreen = ({isRegistered, isStudent}) => {
         backgroundColor="#f0f0f0"
       />
       <View style={styles.background}>
+        <View style={styles.logoutBtn}>
+          <IconButton
+            text="Logout"
+            iconName="log-out-outline"
+            onPress={handleLogoutButton}
+          />
+        </View>
         <View style={styles.card}>
           {isRegistered ? (
             <>
@@ -81,24 +96,19 @@ const HomeScreen = ({isRegistered, isStudent}) => {
                 <Text style={styles.warningText}>
                   Please complete your{`\n`}profile to unlock the app
                 </Text>
-                <Button>CLICK HERE</Button>
+                <Button onPress={handleProfileButton}>CLICK HERE</Button>
               </View>
             </>
           )}
         </View>
         {isRegistered && (
-          <Nav
-            buttons={[
-              {
-                text: 'Notifications',
-                iconName: 'notifications-outline',
-              },
-              {
-                text: 'Settings',
-                iconName: 'settings-outline',
-              },
-            ]}
-          />
+          <View style={styles.profileBtn}>
+            <IconButton
+              text="Go To Profile"
+              iconName="person-outline"
+              onPress={handleProfileButton}
+            />
+          </View>
         )}
       </View>
     </>
@@ -116,8 +126,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     rowGap: 24,
   },
+  logoutBtn: {
+    alignSelf: 'flex-end',
+    marginTop: '10%',
+  },
   card: {
-    marginTop: '20%',
+    marginTop: '10%',
     width: '100%',
     borderRadius: 20,
     padding: 16,
@@ -201,5 +215,8 @@ const styles = StyleSheet.create({
     fontSize: 12,
     lineHeight: 16,
     width: '50%',
+  },
+  profileBtn: {
+    alignSelf: 'flex-end',
   },
 });

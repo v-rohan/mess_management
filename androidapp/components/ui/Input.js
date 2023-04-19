@@ -4,10 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Colors from '../../constants/Colors';
 
 const Input = React.forwardRef(
-  (
-    {value, onChangeText, placeholder, iconName, nextRef, ...props},
-    ref,
-  ) => {
+  ({value, onChangeText, placeholder, iconName, nextRef, ...props}, ref) => {
     const [isFocus, setIsFocus] = useState(false);
 
     const handleOnFocus = () => {
@@ -25,18 +22,20 @@ const Input = React.forwardRef(
             ? [styles.inputContainer, styles.inputFocusContainer]
             : styles.inputContainer
         }>
-        <View
-          style={
-            isFocus
-              ? [styles.iconContainer, styles.iconFocusContainer]
-              : styles.iconContainer
-          }>
-          <Icon
-            name={iconName}
-            size={24}
-            color={isFocus ? Colors.primary60 : 'black'}
-          />
-        </View>
+        {iconName && (
+          <View
+            style={
+              isFocus
+                ? [styles.iconContainer, styles.iconFocusContainer]
+                : styles.iconContainer
+            }>
+            <Icon
+              name={iconName}
+              size={24}
+              color={isFocus ? Colors.primary60 : 'black'}
+            />
+          </View>
+        )}
         <TextInput
           style={isFocus ? [styles.input, styles.inputFocus] : styles.input}
           cursorColor={Colors.primary60}
@@ -88,6 +87,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     fontSize: 16,
     color: 'black',
+    paddingHorizontal: 8,
   },
   inputFocus: {
     backgroundColor: Colors.primary95,

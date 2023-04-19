@@ -3,14 +3,16 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../../constants/Colors';
 
-const IconButton = ({text, iconName}) => {
+const IconButton = ({text, iconName, onPress}) => {
   return (
     <Pressable
       style={({pressed}) =>
         pressed
           ? [styles.container, styles.containerPressed]
           : [styles.container]
-      }>
+      }
+      onPress={onPress}
+      >
       <Icon name={iconName} size={24} color={Colors.primary60} />
       <Text style={styles.text}>{text}</Text>
     </Pressable>

@@ -36,6 +36,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   pressed: {
-    backgroundColor: Colors.primary90,
+    backgroundColor: Colors.primary80,
   },
 });
