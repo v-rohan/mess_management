@@ -4,23 +4,39 @@ import {
   StatusBar,
   Dimensions,
   StyleSheet,
+  TouchableOpacity,
+  Image,
   Pressable,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import Input from '../../components/ui/Input';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
+import { handleGoogleLogin } from './handleGoogle';
 import Colors from '../../constants/Colors';
+import {storage} from '../../App';
+import {login} from '../../api/SignInApiCalls';
 
-const Login = ({navigation}) => {
-  const [regNo, setRegNo] = useState();
+const Login = ({navigation, setIsSignedIn, setIsAdmin}) => {
+  const [email, setEmail] = useState();
   const [pwd, setPwd] = useState();
 
-  const handleLogin = () => {
-    console.log(regNo);
-    console.log(pwd);
-    setRegNo('');
-    setPwd('');
+  const emailRef = useRef();
+  const pwdRef = useRef();
+
+  const handleLogin = async () => {
+    const data = {email, password: pwd};
+    const res = await login(data);
+    if (res.status === 200) {
+      const a = await res.json();
+      storage.set('token', a.token);
+      console.log(a);
+      if (a.role === 'admin') {
+        setIsAdmin(true);
+      }
+      setIsSignedIn(true);
+      //await AsyncStorage.setItem("token", token);
+    }
   };
 
   const handleBackButton = () => {
@@ -51,20 +67,24 @@ const Login = ({navigation}) => {
         </View>
         <View style={styles.inputContainer}>
           <Input
-            inputText={regNo}
-            setInputText={setRegNo}
-            placeholder="Registration Number"
-            iconName="user"
+            value={email}
+            onChangeText={setEmail}
+            placeholder="Email"
+            iconName="envelope"
+            keyboardType="email-address"
+            ref={emailRef}
+            nextRef={pwdRef}
           />
           <Input
-            inputText={pwd}
-            setInputText={setPwd}
+            value={pwd}
+            onChangeText={setPwd}
             placeholder="Password"
             iconName="lock"
             secureTextEntry={true}
+            ref={pwdRef}
           />
         </View>
-        <Pressable
+        {/* <Pressable
           style={({pressed}) =>
             pressed
               ? [styles.forgetPwdTxtContainer, styles.pressedStyle]
@@ -72,9 +92,36 @@ const Login = ({navigation}) => {
           }
           onPress={handleForgetPwd}>
           <Text style={styles.forgetPwdTxt}>Forgot Password?</Text>
-        </Pressable>
+        </Pressable> */}
         <View style={styles.btnContainer}>
           <Button onPress={handleLogin}>LOGIN</Button>
+        </View>
+        <View
+          style={{
+            marginTop: 18,
+            alignItems: 'center',
+            alignSelf: 'center',
+            flexDirection: 'row',
+          }}>
+          <Text
+            style={{
+              fontFamily: 'QuickSand',
+              fontWeight: '800',
+              color: '#595959',
+              fontSize: 13,
+              marginTop: 7,
+            }}>
+            Or Sign in with{'   '}
+          </Text>
+          <TouchableOpacity onPress={() => handleGoogleLogin(setIsSignedIn)}>
+            <View style={{padding:10, borderRadius:15 , borderWidth:1.5, borderColor:'#000000', alignItems:'center'}}>
+              <Image
+                source={require('../../assets/images/googl.png')}
+                style={{marginTop: 7, opacity: 1, marginRight: 3}}
+              />
+              <Text style={{fontFamily: 'Poppins', marginTop: 8, color:'#000'}}>Google</Text>
+            </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.txtContainer}>
           <Text style={styles.txt}>Don't have an account? </Text>

@@ -74,3 +74,19 @@ export const codegen = async data => {
     return {status: 500};
   }
 };
+
+export const appLoginOrRegister = async data => {
+  try {
+    const response = await fetch(`${BACKEND_URL}googleapp/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {status: 500};
+  }
+};

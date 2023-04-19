@@ -112,17 +112,6 @@ export default function App() {
                   </>
                 ) : (
                   <>
-                    {/* <Stack.Screen name="LoginLand">
-                      {props => (
-                        <>
-                          <LoginLand
-                            {...props}
-                            setIsSignedIn={setIsSignedIn}
-                            setIsAdmin={setIsAdmin}
-                          />
-                        </>
-                      )}
-                    </Stack.Screen>
                     <Stack.Screen name="Title" component={TitleScreen} />
                     <Stack.Screen
                       name="Onboarding1"
@@ -152,9 +141,21 @@ export default function App() {
                           imgAspectRatio={1.125}
                         />
                       )}
-                    </Stack.Screen> */}
-                    {/* <Stack.Screen name="Registration" component={Register} /> */}
-                    {/* <Stack.Screen name="Login" component={Login} />
+                    </Stack.Screen>
+                    <Stack.Screen name="Registration">
+                      {props => (
+                        <>
+                          <Register {...props} setIsSignedIn={setIsSignedIn} setIsAdmin={setIsAdmin} />
+                        </>
+                      )}
+                    </Stack.Screen>
+                    <Stack.Screen name="Login">
+                      {props => (
+                        <>
+                          <Login {...props} setIsSignedIn={setIsSignedIn} setIsAdmin={setIsAdmin} />
+                        </>
+                      )}
+                    </Stack.Screen>
                     <Stack.Screen
                       name="ForgotPassword"
                       component={ForgotPassword}
@@ -178,8 +179,8 @@ export default function App() {
                           content="+91 00000 11111"
                         />
                       )}
-                    </Stack.Screen> */}
-                    {/* <Stack.Screen name="PhoneNo" component={PhoneNo} /> */}
+                    </Stack.Screen>
+                    <Stack.Screen name="PhoneNo" component={PhoneNo} />
                     <Stack.Screen
                       name="ResetPassword"
                       component={ResetPassword}
