@@ -19,6 +19,7 @@ import Verification from './screens/Verification/Verification';
 import PhoneNo from './screens/PhoneNo/PhoneNo';
 import ResetPassword from './screens/Password/ResetPassword';
 import PasswordResetSuccess from './screens/Password/PasswordResetSuccess';
+import HomeScreen from './screens/Home/HomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -113,6 +114,7 @@ export default function App() {
                   </>
                 ) : (
                   <>
+                    <Stack.Screen name="HomeScreen" component={HomeScreen} />
                     <Stack.Screen name="LoginLand">
                       {props => (
                         <>
