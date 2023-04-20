@@ -6,20 +6,76 @@ import {
   Text,
   View,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import Colors from '../../constants/Colors';
 import Button from '../../components/ui/Button';
+import QRCode from 'react-native-qrcode-svg';
 import IconButton from '../../components/ui/IconButton';
+import {codegen} from '../../api/Api';
+import { scan } from '../../api/Api';
+import {storage} from '../../App';
 
-const HomeScreen = ({navigation, isRegistered, isStudent}) => {
+const HomeScreen = ({
+  navigation,
+  route,
+  isRegistered,
+  isStudent,
+  userData,
+  userDataSet,
+}) => {
+  const [showQR, setShowQR] = useState(false);
+  const [name, setName] = useState('New User');
+  const [qr, setQR] = useState(null);
+
+
+  const [code, onChangeCode] = React.useState('');
+
+  // useEffect(()=>{
+  //   setInterval(()=>{console.log(storage.getString('token'))}, 1000)
+  // })
+
+  React.useEffect(() => {
+    if (route.params?.code) {
+      console.log('scanb', route.params.code);
+      onChangeCode(route.params.code);
+      route.params.code = null;
+    }
+  }, [route.params?.code]);
+
+
+  useEffect(() => {
+    if (code !== '') {
+      console.log(code);
+      scan(code);
+      onChangeCode('');
+    }
+  }, [code]);
+
+  const handleCodeGen = async () => {
+    const res = await codegen();
+    if (res.status === 200) {
+      const a = await res.json();
+      setQR(a.code);
+      console.log(a);
+      setShowQR(!showQR);
+    }
+  };
   const handleLogoutButton = () => {
     console.log('LOGOUT');
   };
 
   const handleProfileButton = () => {
     console.log('TO PROFILE');
-    navigation.navigate("Account");
+    navigation.navigate('Account');
   };
+
+  useEffect(() => {
+    if (userData && userData.name) setName(userData.name);
+  });
+
+  useEffect(() => {
+    userDataSet();
+  }, []);
 
   return (
     <>
@@ -41,7 +97,10 @@ const HomeScreen = ({navigation, isRegistered, isStudent}) => {
             <>
               <View style={styles.userContainer}>
                 <View style={styles.textContainer}>
-                  <Text style={styles.title}>Hello{`\n`}Full Name!</Text>
+                  <Text style={styles.title}>
+                    Hello{`\n`}
+                    {name}
+                  </Text>
                   <Text style={styles.quote}>Good to have you back</Text>
                 </View>
                 <View style={styles.imageContainer}>
@@ -60,15 +119,26 @@ const HomeScreen = ({navigation, isRegistered, isStudent}) => {
                     <Text style={styles.contentDesc}>
                       Get your meal by simply generating a QR code
                     </Text>
-                    <IconButton text="Generate QR" iconName="qr-code-outline" />
+                    <IconButton
+                      text="Generate QR"
+                      iconName="qr-code-outline"
+                      onPress={() => {
+                        handleCodeGen();
+                      }}
+                    />
                   </View>
                   <View style={styles.line}></View>
-                  <View style={styles.scannerContainer}>
-                    <Text style={styles.contentTitle}>Your Coupons</Text>
-                    <Text style={styles.contentDesc}>
-                      You have 20 days of coupons available for this month
-                    </Text>
-                    <IconButton text="Pay Now" iconName="card-outline" />
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      marginTop: 15,
+                      justifyContent: 'center',
+                    }}>
+                    {showQR && toString(qr) != null ? (
+                      <QRCode value={qr} />
+                    ) : (
+                      <></>
+                    )}
                   </View>
                 </>
               ) : (
@@ -77,7 +147,9 @@ const HomeScreen = ({navigation, isRegistered, isStudent}) => {
                   <Text style={styles.contentDesc}>
                     Scan mess coupons to check the QRs provided for meals
                   </Text>
-                  <IconButton text="Scan QR" iconName="scan" />
+                  <IconButton text="Scan QR" iconName="scan" onPress={()=>{
+                    navigation.navigate('QRScan')
+                  }}/>
                 </View>
               )}
             </>

@@ -65,6 +65,9 @@ export class User {
     @CreateDateColumn()
     created_at: Date;
 
+    @Column({nullable:false, default:false})
+    profileDone: Boolean;
+
     // @OneToOne(() => Verify, (verify) => verify.id)
     // verify: Verify;
 }

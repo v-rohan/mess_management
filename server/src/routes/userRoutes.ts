@@ -15,7 +15,7 @@ module.exports = (app: Express, passport: any) => {
   require("../passport/jwt")(passport);
   require("../passport/google")(passport);
 
-  app.post(
+  app.put(
     "/updateuser",
     passport.authenticate("jwt", { session: false }),
     async (req: IGetUserAuthInfoRequest, res: Response) => {
@@ -23,11 +23,13 @@ module.exports = (app: Express, passport: any) => {
         where: { id: req.user.id },
       });
       user = { ...user, ...req.body };
+      user.profileDone = true;
       await getRepository(User)
         .save(user)
         .then(() => {
           return res.status(200).json(user);
-        });
+        })
+        .catch((err) => res.status(500).send(err));
     }
   );
 
@@ -37,7 +39,8 @@ module.exports = (app: Express, passport: any) => {
     async (request: Request, response: Response, next: NextFunction) => {
       var newUser = new User();
       newUser.email = request.body.email;
-      newUser.role = UserRole.USER;
+      newUser.role = UserRole.ADMIN;
+      newUser.profileDone = false;
       try {
         newUser.password = await passwordhasher(request.body.password);
         await getManager()
@@ -46,7 +49,7 @@ module.exports = (app: Express, passport: any) => {
               .save(newUser)
               .then((user) => {
                 console.log(user);
-                response.sendStatus(200)
+                response.sendStatus(200);
               })
               .catch((error) => {
                 throw error;
@@ -83,7 +86,8 @@ module.exports = (app: Express, passport: any) => {
 
             response.status(200).json({
               token: "Bearer " + token,
-              role: payload.role
+              role: payload.role,
+              profileDone: user.profileDone,
             });
           } else response.status(403).send("Invalid email or password");
         });
@@ -93,7 +97,6 @@ module.exports = (app: Express, passport: any) => {
     }
   );
 
- 
   app.get(
     "/google",
     passport.authenticate("google", {
@@ -117,6 +120,8 @@ module.exports = (app: Express, passport: any) => {
 
       response.status(200).json({
         token: "Bearer " + token,
+        role: request.user.role,
+        profileDone: request.user.profileDone,
       });
     }
   );
@@ -144,10 +149,13 @@ module.exports = (app: Express, passport: any) => {
 
             response.status(200).json({
               token: "Bearer " + token,
+              role: user.role,
+              profileDone: user.profileDone,
             });
           } else {
             user = new User();
             user.email = data.email;
+            user.profileDone = false;
             user.password = data.sub;
 
             getRepository(User)
@@ -165,6 +173,8 @@ module.exports = (app: Express, passport: any) => {
 
                 response.status(200).json({
                   token: "Bearer " + token,
+                  role: savedUser.role,
+                  profileDone: savedUser.profileDone,
                 });
               });
           }
@@ -186,27 +196,14 @@ module.exports = (app: Express, passport: any) => {
       response: Response,
       next: NextFunction
     ) => {
-      if (request.user.role === UserRole.ADMIN) {
-        await getRepository(User)
-          .find()
-          .then((users) => {
-            users.forEach((item) => delete item["password"]);
-            response.set({
-              "Access-Control-Expose-Headers": "Content-Range",
-              "Content-Range": `X-Total-Count: ${1} - ${users.length} / ${
-                users.length
-              }`,
-            });
-            response.status(200).json(users);
-          })
-          .catch((error) => {
-            response.status(500).send(error);
-          });
-      } else {
+      try {
         var user = await getRepository(User).findOneOrFail({
           where: { id: request.user.id },
         });
-        response.status(200).json(user);
+        response.status(200).json({ user: user });
+      } catch (err) {
+        console.log(err);
+        response.status(500).send(err);
       }
     }
   );

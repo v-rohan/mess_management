@@ -12,7 +12,7 @@ import {
   TextInput,
   Button,
 } from 'react-native';
-import {register, login, scan} from '../../api/SignInApiCalls';
+import {register, login, scan} from '../../api/Api';
 import {storage} from '../../App';
 
 export const Home = ({navigation, route, setIsSignedIn}) => {

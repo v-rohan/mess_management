@@ -15,7 +15,7 @@ import {
   Button,
 } from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
-import {codegen} from '../../api/SignInApiCalls';
+import {codegen} from '../../api/Api';
 import {storage} from '../../App';
 
 export const QRgen = ({navigation, setIsSignedIn}) => {

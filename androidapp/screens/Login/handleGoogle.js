@@ -2,12 +2,15 @@ import {
   GoogleSignin,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { appLoginOrRegister } from '../../api/SignInApiCalls';
-import { storage } from '../../App';
+import {appLoginOrRegister} from '../../api/Api';
+import {storage} from '../../App';
 import {ANDROID_GOOGLE_CLIENT_ID} from '@env';
 
-
-export const handleGoogleLogin = async setIsSignedIn => {
+export const handleGoogleLogin = async (
+  setIsSignedIn,
+  setIsAdmin,
+  setIsRegistered,
+) => {
   GoogleSignin.configure({
     webClientId: ANDROID_GOOGLE_CLIENT_ID,
     offlineAccess: true,
@@ -21,8 +24,16 @@ export const handleGoogleLogin = async setIsSignedIn => {
     const res = await appLoginOrRegister(data);
     console.log(res.status);
     if (res.status === 200) {
-      const {token} = await res.json();
-      storage.set('token', token);
+      const a = await res.json();
+
+      console.log(a);
+      storage.set('token', a.token);
+      storage.set('role', a.role);
+      storage.set('isRegistered', a.profileDone);
+      setIsRegistered(a.profileDone);
+      if (a.role === 'admin') {
+        setIsAdmin(true);
+      }
 
       setIsSignedIn(true);
       console.log('Logged In successfully');

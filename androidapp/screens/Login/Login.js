@@ -15,9 +15,9 @@ import BackButton from '../../components/ui/BackButton';
 import { handleGoogleLogin } from './handleGoogle';
 import Colors from '../../constants/Colors';
 import {storage} from '../../App';
-import {login} from '../../api/SignInApiCalls';
+import {login} from '../../api/Api';
 
-const Login = ({navigation, setIsSignedIn, setIsAdmin}) => {
+const Login = ({navigation, setIsSignedIn, setIsAdmin, setIsRegistered}) => {
   const [email, setEmail] = useState();
   const [pwd, setPwd] = useState();
 
@@ -30,7 +30,9 @@ const Login = ({navigation, setIsSignedIn, setIsAdmin}) => {
     if (res.status === 200) {
       const a = await res.json();
       storage.set('token', a.token);
-      console.log(a);
+      storage.set('role', a.role);
+      storage.set('isRegistered', a.profileDone) 
+      setIsRegistered(a.profileDone);
       if (a.role === 'admin') {
         setIsAdmin(true);
       }
@@ -113,7 +115,7 @@ const Login = ({navigation, setIsSignedIn, setIsAdmin}) => {
             }}>
             Or Sign in with{'   '}
           </Text>
-          <TouchableOpacity onPress={() => handleGoogleLogin(setIsSignedIn)}>
+          <TouchableOpacity onPress={() => handleGoogleLogin(setIsSignedIn, setIsAdmin, setIsRegistered)}>
             <View style={{padding:10, borderRadius:15 , borderWidth:1.5, borderColor:'#000000', alignItems:'center'}}>
               <Image
                 source={require('../../assets/images/googl.png')}

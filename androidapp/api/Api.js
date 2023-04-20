@@ -90,3 +90,42 @@ export const appLoginOrRegister = async data => {
     return {status: 500};
   }
 };
+
+
+export const editProfile = async data => {
+  try {
+    const token = storage.getString('token');
+    const response = await fetch(`${BACKEND_URL}updateuser/`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    console.log(response);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {status: 500};
+  }
+};
+
+
+export const userInfo = async data => {
+  try {
+    const token = storage.getString('token');
+    const response = await fetch(`${BACKEND_URL}user/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    });
+    console.log(response);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {status: 500};
+  }
+};

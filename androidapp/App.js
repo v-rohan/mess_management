@@ -1,14 +1,13 @@
 import {StyleSheet, View, Platform, Text, TextInput} from 'react-native';
 import {useState, useEffect} from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useFocusEffect} from '@react-navigation/native';
 import {getHeaderTitle} from '@react-navigation/elements';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 import {MMKV} from 'react-native-mmkv';
-import {LoginLand} from './screens/Login/LoginLand';
 import {QRgen} from './screens/QR/QRgen';
-import QRScan from './components/QRScan';
+import QRScan from './screens/QR/QRScan';
 import {Home} from './screens/Home/index';
 import Register from './screens/Reg/Register';
 import TitleScreen from './screens/Onboarding/TitleScreen';
@@ -21,6 +20,7 @@ import ResetPassword from './screens/Password/ResetPassword';
 import PasswordResetSuccess from './screens/Password/PasswordResetSuccess';
 import HomeScreen from './screens/Home/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
+import {userInfo} from './api/Api';
 
 const Stack = createNativeStackNavigator();
 
@@ -29,6 +29,8 @@ export const storage = new MMKV();
 export default function App() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isRegistered, setIsRegistered] = useState(false);
+  const [userData, setUserData] = useState();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -37,6 +39,51 @@ export default function App() {
         setIsLoading(false);
       }, 800);
     }, 1200);
+  }, []);
+
+  useEffect(() => {
+    console.log('userdata in app.js - ', userData);
+  }, [userData]);
+
+  useEffect(() => {
+    userDataSet();
+  }, [isSignedIn]);
+
+  const userDataSet = async () => {
+    const userInfoRes = await userInfo();
+    const userInf = await userInfoRes.json();
+    //console.log(userInf);
+    setUserData(userInf.name);
+  };
+
+  useEffect(() => {
+    const getToken = async () => {
+      try {
+        const token = await storage.getString('token');
+        if (token) {
+          // We have token!!
+          setIsSignedIn(true);
+          const role = await storage.getString('role');
+          const isRegistered = storage.getBoolean('isRegistered');
+
+          console.log(token, role, isRegistered);
+
+          setIsRegistered(isRegistered);
+          if (role !== null) {
+            if (role === 'admin') setIsAdmin(true);
+          } else {
+            console.log('logout here');
+          }
+
+          userDataSet();
+          //   await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
+        }
+      } catch (error) {
+        // Error retrieving data
+        console.log(error);
+      }
+    };
+    getToken();
   }, []);
 
   const styles = StyleSheet.create({
@@ -91,6 +138,27 @@ export default function App() {
               <>
                 {isSignedIn ? (
                   <>
+                    <Stack.Screen name="HomeScreen">
+                      {props => (
+                        <HomeScreen
+                          {...props}
+                          isRegistered={isRegistered}
+                          isStudent={!isAdmin}
+                          userData={userData}
+                          userDataSet={userDataSet}
+                        />
+                      )}
+                    </Stack.Screen>
+                    <Stack.Screen name="Account">
+                      {props => (
+                        <AccountScreen
+                          {...props}
+                          setIsRegistered={setIsRegistered}
+                          setUserData={setUserData}
+                          //isStudent={!isAdmin}
+                        />
+                      )}
+                    </Stack.Screen>
                     <Stack.Screen name="QRgen">
                       {props => (
                         <>
@@ -98,13 +166,7 @@ export default function App() {
                         </>
                       )}
                     </Stack.Screen>
-                    <Stack.Screen name="Home">
-                      {props => (
-                        <>
-                          <Home {...props} setIsSignedIn={setIsSignedIn} />
-                        </>
-                      )}
-                    </Stack.Screen>
+
                     <Stack.Screen name="QRScan">
                       {props => (
                         <>
@@ -112,10 +174,30 @@ export default function App() {
                         </>
                       )}
                     </Stack.Screen>
+                    <Stack.Screen name="VerificationEmail">
+                      {props => (
+                        <Verification
+                          {...props}
+                          title="Email"
+                          text="email"
+                          content="a@gmail.com"
+                        />
+                      )}
+                    </Stack.Screen>
+                    <Stack.Screen name="VerificationPhone">
+                      {props => (
+                        <Verification
+                          {...props}
+                          title="Phone Number"
+                          text="number"
+                          content="+91 00000 11111"
+                        />
+                      )}
+                    </Stack.Screen>
                   </>
                 ) : (
                   <>
-                    <Stack.Screen name="LoginLand">
+                    {/* <Stack.Screen name="LoginLand">
                       {props => (
                         <>
                           <LoginLand
@@ -125,7 +207,8 @@ export default function App() {
                           />
                         </>
                       )}
-                    </Stack.Screen>
+                    </Stack.Screen> */}
+
                     <Stack.Screen name="Title" component={TitleScreen} />
                     <Stack.Screen
                       name="Onboarding1"
@@ -159,41 +242,33 @@ export default function App() {
                     <Stack.Screen name="Registration">
                       {props => (
                         <>
-                          <Register {...props} setIsSignedIn={setIsSignedIn} setIsAdmin={setIsAdmin} />
+                          <Register
+                            {...props}
+                            setIsSignedIn={setIsSignedIn}
+                            setIsAdmin={setIsAdmin}
+                            setIsRegistered={setIsRegistered}
+                          />
                         </>
                       )}
                     </Stack.Screen>
                     <Stack.Screen name="Login">
                       {props => (
                         <>
-                          <Login {...props} setIsSignedIn={setIsSignedIn} setIsAdmin={setIsAdmin} />
+                          <Login
+                            {...props}
+                            setIsSignedIn={setIsSignedIn}
+                            setIsAdmin={setIsAdmin}
+                            setIsRegistered={setIsRegistered}
+                          />
                         </>
                       )}
                     </Stack.Screen>
+
                     <Stack.Screen
                       name="ForgotPassword"
                       component={ForgotPassword}
                     />
-                    <Stack.Screen name="VerificationEmail">
-                      {props => (
-                        <Verification
-                          {...props}
-                          title="Email"
-                          text="email"
-                          content="a@gmail.com"
-                        />
-                      )}
-                    </Stack.Screen>
-                    <Stack.Screen name="VerificationPhone">
-                      {props => (
-                        <Verification
-                          {...props}
-                          title="Phone Number"
-                          text="number"
-                          content="+91 00000 11111"
-                        />
-                      )}
-                    </Stack.Screen>
+
                     <Stack.Screen name="PhoneNo" component={PhoneNo} />
                     <Stack.Screen
                       name="ResetPassword"
@@ -203,16 +278,6 @@ export default function App() {
                       name="ResetPasswordSuccess"
                       component={PasswordResetSuccess}
                     />
-                    <Stack.Screen name="HomeScreen">
-                      {props => (
-                        <HomeScreen
-                          {...props}
-                          isRegistered={false}
-                          isStudent={false}
-                        />
-                      )}
-                    </Stack.Screen>
-                    <Stack.Screen name="Account" component={AccountScreen} />
                   </>
                 )}
               </>

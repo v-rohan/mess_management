@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 import React, {useRef, useState} from 'react';
 import Input from '../../components/ui/Input';
-import { handleGoogleLogin } from '../Login/handleGoogle';
+import {handleGoogleLogin} from '../Login/handleGoogle';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
 import Colors from '../../constants/Colors';
-import { register } from '../../api/SignInApiCalls';
-import { storage } from '../../App';
+import {register} from '../../api/Api';
+import {storage} from '../../App';
 
-const Register = ({navigation, setIsSignedIn}) => {
+const Register = ({navigation, setIsSignedIn, setIsAdmin, setIsRegistered}) => {
   const [regNo, setRegNo] = useState();
   const [email, setEmail] = useState();
   const [pwd, setPwd] = useState();
@@ -27,7 +27,7 @@ const Register = ({navigation, setIsSignedIn}) => {
 
   const handleRegister = async () => {
     const data = {email, password: pwd};
-    const res = await  register(data);
+    const res = await register(data);
     if (res.status === 200) {
       navigation.navigate('Login');
 
@@ -58,7 +58,6 @@ const Register = ({navigation, setIsSignedIn}) => {
           <Text style={styles.title}>Create Your{'\n'}Account</Text>
         </View>
         <View style={styles.inputContainer}>
-      
           <Input
             value={email}
             onChangeText={setEmail}
@@ -97,13 +96,26 @@ const Register = ({navigation, setIsSignedIn}) => {
             }}>
             Or Sign in with{'   '}
           </Text>
-          <TouchableOpacity onPress={() => handleGoogleLogin(setIsSignedIn)}>
-            <View style={{padding:10, borderRadius:15 , borderWidth:1.5, borderColor:'#000000', alignItems:'center'}}>
+          <TouchableOpacity
+            onPress={() =>
+              handleGoogleLogin(setIsSignedIn, setIsAdmin, setIsRegistered)
+            }>
+            <View
+              style={{
+                padding: 10,
+                borderRadius: 15,
+                borderWidth: 1.5,
+                borderColor: '#000000',
+                alignItems: 'center',
+              }}>
               <Image
                 source={require('../../assets/images/googl.png')}
                 style={{marginTop: 7, opacity: 1, marginRight: 3}}
               />
-              <Text style={{fontFamily: 'Poppins', marginTop: 8, color:'#000'}}>Google</Text>
+              <Text
+                style={{fontFamily: 'Poppins', marginTop: 8, color: '#000'}}>
+                Google
+              </Text>
             </View>
           </TouchableOpacity>
         </View>

@@ -3,29 +3,46 @@ import React, {useEffect, useRef, useState} from 'react';
 import BackButton from '../components/ui/BackButton';
 import Input from '../components/ui/Input';
 import Button from '../components/ui/Button';
+import {editProfile, userInfo} from '../api/Api';
+import {storage} from '../App';
 
-const AccountScreen = ({navigation}) => {
+const AccountScreen = ({navigation, setIsRegistered, setUserData}) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const [name, setName] = useState();
-  const [rollNo, setRollNo] = useState();
+  const [roll, setRollNo] = useState();
   const [dept, setDept] = useState();
-  const [hallNo, setHallNo] = useState();
+  const [mobile, setPhone] = useState();
+  const [hall, setHallNo] = useState();
 
+  const nameRef = useRef();
   const rollNoRef = useRef();
   const deptRef = useRef();
   const hallNoRef = useRef();
+  const phoneRef = useRef();
 
-  //   useEffect(() => {
-  //     console.log('GET DATA OF USER');
-  //     console.log('SET INPUT VALUES TO IT');
-  //   }, []);
+  useEffect(() => {
+    async function dataPopulation() {
+      console.log('GET DATA OF USER');
+      const res = await userInfo();
+      const a = await res.json();
+
+      setName(a.user.name);
+      setRollNo(a.user.roll);
+      setDept(a.user.dept);
+      setPhone(a.user.mobile);
+      setHallNo(a.user.hall);
+      console.log('SET INPUT VALUES TO IT');
+    }
+    dataPopulation();
+  }, []);
 
   const handleEditProfile = () => {
-    setName();
-    setRollNo();
-    setDept();
-    setHallNo();
+    // setName();
+    // setRollNo();
+    // setDept();
+    // setHallNo();
+    // setPhone();
 
     setIsEditing(prevState => !prevState);
   };
@@ -40,22 +57,31 @@ const AccountScreen = ({navigation}) => {
     setIsEditing(prevState => !prevState);
   };
 
-  const handleSaveChanges = () => {
+  const handleSaveChanges = async () => {
     const data = {
       name,
-      rollNo,
+      roll,
       dept,
-      hallNo,
+      hall,
+      mobile,
     };
 
-    console.log('SEND DATA TO BACKEND', data);
+    const res = await editProfile(data);
+    const a = await res.json();
+
+    setUserData(a);
+
+    setIsRegistered(a.profileDone);
+    storage.set('isRegistered', a.profileDone);
+
+    //console.log('SEND DATA TO BACKEND', data);
     setIsEditing(prevState => !prevState);
   };
 
   const handleBackButton = () => {
-    console.log("GO BACK")
+    console.log('GO BACK');
     navigation.goBack();
-  }
+  };
 
   return (
     <>
@@ -76,12 +102,13 @@ const AccountScreen = ({navigation}) => {
             placeholder="Full Name"
             value={name}
             onChangeText={setName}
+            ref={nameRef}
             nextRef={rollNoRef}
             editable={isEditing}
           />
           <Input
             placeholder="Roll Number"
-            value={rollNo}
+            value={roll}
             onChangeText={setRollNo}
             ref={rollNoRef}
             nextRef={deptRef}
@@ -97,9 +124,17 @@ const AccountScreen = ({navigation}) => {
           />
           <Input
             placeholder="Hall Number"
-            value={hallNo}
+            value={hall}
             onChangeText={setHallNo}
             ref={hallNoRef}
+            nextRef={phoneRef}
+            editable={isEditing}
+          />
+          <Input
+            placeholder="Phone Number"
+            value={mobile}
+            onChangeText={setPhone}
+            ref={phoneRef}
             editable={isEditing}
           />
           <View style={styles.btnsContainer}>
