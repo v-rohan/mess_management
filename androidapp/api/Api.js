@@ -129,3 +129,25 @@ export const userInfo = async data => {
     return {status: 500};
   }
 };
+
+export const logout = async() => {
+    storage.clearAll();
+}
+
+export const checkQR = async data => {
+  try {
+    const token = storage.getString('token');
+    const response = await fetch(`${BACKEND_URL}check/${data}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    });
+    console.log(response);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {status: 500};
+  }
+};

@@ -20,7 +20,7 @@ import ResetPassword from './screens/Password/ResetPassword';
 import PasswordResetSuccess from './screens/Password/PasswordResetSuccess';
 import HomeScreen from './screens/Home/HomeScreen';
 import AccountScreen from './screens/AccountScreen';
-import {userInfo} from './api/Api';
+import {logout, userInfo} from './api/Api';
 
 const Stack = createNativeStackNavigator();
 
@@ -45,16 +45,20 @@ export default function App() {
     console.log('userdata in app.js - ', userData);
   }, [userData]);
 
-  useEffect(() => {
-    userDataSet();
-  }, [isSignedIn]);
-
   const userDataSet = async () => {
     const userInfoRes = await userInfo();
     const userInf = await userInfoRes.json();
     //console.log(userInf);
-    setUserData(userInf.name);
+    setUserData(userInf.user);
+    setIsLoading(false);
   };
+
+  useEffect(() => {
+    if (isSignedIn) {
+      console.log('signed in fetching user data');
+      userDataSet();
+    }
+  }, [isSignedIn]);
 
   useEffect(() => {
     const getToken = async () => {
@@ -67,15 +71,17 @@ export default function App() {
           const isRegistered = storage.getBoolean('isRegistered');
 
           console.log(token, role, isRegistered);
-
+          setIsLoading(true);
           setIsRegistered(isRegistered);
           if (role !== null) {
             if (role === 'admin') setIsAdmin(true);
           } else {
             console.log('logout here');
+            logout();
+            setIsSignedIn(false);
           }
 
-          userDataSet();
+          // userDataSet();
           //   await AsyncStorage.setItem('userInfo', JSON.stringify(userInfo));
         }
       } catch (error) {
@@ -146,6 +152,7 @@ export default function App() {
                           isStudent={!isAdmin}
                           userData={userData}
                           userDataSet={userDataSet}
+                          setIsSignedIn={setIsSignedIn}
                         />
                       )}
                     </Stack.Screen>

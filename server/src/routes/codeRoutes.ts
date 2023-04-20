@@ -72,5 +72,26 @@ module.exports = (app: Express, passport: any) => {
     }
   );
 
-
+  app.get(
+    "/check/:id",
+    passport.authenticate("jwt", { session: false }),
+    async (
+      request: IGetUserAuthInfoRequest,
+      response: Response,
+      next: NextFunction
+    ) => {
+      if (request.user.role === UserRole.USER) {
+        try{
+        await getRepository(Code)
+          .findOneOrFail({where: {sessionId: request.params.id}})
+          .then(async () => {
+            response.sendStatus(500)
+          })
+        }
+        catch(err){
+          response.sendStatus(200)
+        }
+      }else response.sendStatus(401)
+    }
+  );
 };

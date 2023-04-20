@@ -11,8 +11,8 @@ import Colors from '../../constants/Colors';
 import Button from '../../components/ui/Button';
 import QRCode from 'react-native-qrcode-svg';
 import IconButton from '../../components/ui/IconButton';
-import {codegen} from '../../api/Api';
-import { scan } from '../../api/Api';
+import {checkQR, codegen, logout} from '../../api/Api';
+import {scan} from '../../api/Api';
 import {storage} from '../../App';
 
 const HomeScreen = ({
@@ -21,12 +21,11 @@ const HomeScreen = ({
   isRegistered,
   isStudent,
   userData,
-  userDataSet,
+  setIsSignedIn,
 }) => {
   const [showQR, setShowQR] = useState(false);
   const [name, setName] = useState('New User');
   const [qr, setQR] = useState(null);
-
 
   const [code, onChangeCode] = React.useState('');
 
@@ -42,7 +41,6 @@ const HomeScreen = ({
     }
   }, [route.params?.code]);
 
-
   useEffect(() => {
     if (code !== '') {
       console.log(code);
@@ -51,16 +49,39 @@ const HomeScreen = ({
     }
   }, [code]);
 
+  useEffect(() => {
+    if (qr !== '' && qr !== null && qr !== undefined) {
+      const interval = setInterval(async () => {
+        const res = await checkQR(qr);
+        console.log('IMPORTANT ->>>>>>>>', res.status);
+        if (res.status === 200) {
+          setShowQR(false);
+          clearInterval(interval);
+        }
+      }, 2000);
+    }
+  }, [qr]);
+
+  useEffect(() => {
+    if (showQR == false) setQR(null);
+  }, [showQR]);
+
   const handleCodeGen = async () => {
-    const res = await codegen();
-    if (res.status === 200) {
-      const a = await res.json();
-      setQR(a.code);
-      console.log(a);
-      setShowQR(!showQR);
+    if (showQR == true) {
+      setShowQR(false);
+    } else {
+      const res = await codegen();
+      if (res.status === 200) {
+        const a = await res.json();
+        setQR(a.code);
+        console.log(a);
+        setShowQR(true);
+      }
     }
   };
   const handleLogoutButton = () => {
+    logout();
+    setIsSignedIn(false);
     console.log('LOGOUT');
   };
 
@@ -72,10 +93,6 @@ const HomeScreen = ({
   useEffect(() => {
     if (userData && userData.name) setName(userData.name);
   });
-
-  useEffect(() => {
-    userDataSet();
-  }, []);
 
   return (
     <>
@@ -147,9 +164,13 @@ const HomeScreen = ({
                   <Text style={styles.contentDesc}>
                     Scan mess coupons to check the QRs provided for meals
                   </Text>
-                  <IconButton text="Scan QR" iconName="scan" onPress={()=>{
-                    navigation.navigate('QRScan')
-                  }}/>
+                  <IconButton
+                    text="Scan QR"
+                    iconName="scan"
+                    onPress={() => {
+                      navigation.navigate('QRScan');
+                    }}
+                  />
                 </View>
               )}
             </>
