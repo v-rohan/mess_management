@@ -15,7 +15,7 @@ var jwt = require("jsonwebtoken");
 
 module.exports = (app: Express, passport: any) => {
   require("../passport/jwt")(passport);
-  require("../passport/google")(passport);
+  //require("../passport/google")(passport);
   //signup
   app.post(
     "/generatecode",

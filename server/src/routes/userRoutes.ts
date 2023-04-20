@@ -13,7 +13,7 @@ var jwt = require("jsonwebtoken");
 
 module.exports = (app: Express, passport: any) => {
   require("../passport/jwt")(passport);
-  require("../passport/google")(passport);
+  //require("../passport/google")(passport);
 
   app.put(
     "/updateuser",
@@ -39,7 +39,7 @@ module.exports = (app: Express, passport: any) => {
     async (request: Request, response: Response, next: NextFunction) => {
       var newUser = new User();
       newUser.email = request.body.email;
-      newUser.role = UserRole.ADMIN;
+      newUser.role = UserRole.USER;
       newUser.profileDone = false;
       try {
         newUser.password = await passwordhasher(request.body.password);
@@ -97,34 +97,34 @@ module.exports = (app: Express, passport: any) => {
     }
   );
 
-  app.get(
-    "/google",
-    passport.authenticate("google", {
-      scope: ["email", "profile"],
-    })
-  );
+  // app.get(
+  //   "/google",
+  //   passport.authenticate("google", {
+  //     scope: ["email", "profile"],
+  //   })
+  // );
 
-  app.get(
-    "/google/callback",
-    passport.authenticate("google"),
-    (request: IGetUserAuthInfoRequest, response: Response) => {
-      const payload = {
-        id: request.user.id,
-        email: request.user.email,
-        role: request.user.role,
-      };
+  // app.get(
+  //   "/google/callback",
+  //   passport.authenticate("google"),
+  //   (request: IGetUserAuthInfoRequest, response: Response) => {
+  //     const payload = {
+  //       id: request.user.id,
+  //       email: request.user.email,
+  //       role: request.user.role,
+  //     };
 
-      var token = jwt.sign(payload, secretOrKey, {
-        expiresIn: 600000,
-      });
+  //     var token = jwt.sign(payload, secretOrKey, {
+  //       expiresIn: 600000,
+  //     });
 
-      response.status(200).json({
-        token: "Bearer " + token,
-        role: request.user.role,
-        profileDone: request.user.profileDone,
-      });
-    }
-  );
+  //     response.status(200).json({
+  //       token: "Bearer " + token,
+  //       role: request.user.role,
+  //       profileDone: request.user.profileDone,
+  //     });
+  //   }
+  // );
 
   app.post("/googleapp", async (request: Request, response: Response) => {
     try {
