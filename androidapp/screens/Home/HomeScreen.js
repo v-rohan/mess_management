@@ -118,7 +118,30 @@ const HomeScreen = ({
   useEffect(() => {
     async function a() {
       const res = await stats();
-      console.log(await res.json());
+      const resJson = await res.json();
+      console.log(resJson);
+      if (isStudent === true) {
+        setBreakfast(resJson.break_no);
+        setDinner(resJson.din_no);
+        setLunch(resJson.lunch_no);
+        setSnacks(resJson.sn_no);
+      } else {
+        setDailyBreakfast(resJson.breakfast_day_no);
+        setMonthlyBreakfast(resJson.breakfast_month_no);
+        setYearlyBreakfast(resJson.breakfast_yearly_no);
+
+        setDailyLunch(resJson.lunch_day_no);
+        setMonthlyLunch(resJson.lunch_month_no);
+        setYearlyLunch(resJson.lunch_yearly_no);
+
+        setDailySnacks(resJson.sn_day_no);
+        setMonthlySnacks(resJson.sn_month_no);
+        setYearlySnacks(resJson.sn_yearly_no);
+
+        setDailyDinner(resJson.din_day_no);
+        setMonthlyDinner(resJson.din_month_no);
+        setYearlyDinner(resJson.din_yearly_no);
+      }
     }
     a();
   });
