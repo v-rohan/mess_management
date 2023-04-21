@@ -1,6 +1,7 @@
 import {
   Dimensions,
   Image,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -28,6 +29,26 @@ const HomeScreen = ({
   const [qr, setQR] = useState(null);
 
   const [code, onChangeCode] = React.useState('');
+
+  const [breakfast, setBreakfast] = useState();
+  const [lunch, setLunch] = useState();
+  const [snacks, setSnacks] = useState();
+  const [dinner, setDinner] = useState();
+
+  const [dailyBreakfast, setDailyBreakfast] = useState();
+  const [dailyLunch, setDailyLunch] = useState();
+  const [dailySnacks, setDailySnacks] = useState();
+  const [dailyDinner, setDailyDinner] = useState();
+
+  const [monthlyBreakfast, setMonthlyBreakfast] = useState();
+  const [monthlyLunch, setMonthlyLunch] = useState();
+  const [monthlySnacks, setMonthlySnacks] = useState();
+  const [monthlyDinner, setMonthlyDinner] = useState();
+
+  const [yearlyBreakfast, setYearlyBreakfast] = useState();
+  const [yearlyLunch, setYearlyLunch] = useState();
+  const [yearlySnacks, setYearlySnacks] = useState();
+  const [yearlyDinner, setYearlyDinner] = useState();
 
   // useEffect(()=>{
   //   setInterval(()=>{console.log(storage.getString('token'))}, 1000)
@@ -94,13 +115,13 @@ const HomeScreen = ({
     if (userData && userData.name) setName(userData.name);
   });
 
-  useEffect(()=> {
-    async function a(){
+  useEffect(() => {
+    async function a() {
       const res = await stats();
       console.log(await res.json());
     }
     a();
-  })
+  });
 
   return (
     <>
@@ -109,109 +130,177 @@ const HomeScreen = ({
         translucent={true}
         backgroundColor="#f0f0f0"
       />
-      <View style={styles.background}>
-        <View style={styles.logoutBtn}>
-          <IconButton
-            text="Logout"
-            iconName="log-out-outline"
-            onPress={handleLogoutButton}
-          />
-        </View>
-        <View style={styles.card}>
-          {isRegistered ? (
-            <>
-              <View style={styles.userContainer}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.title}>
-                    Hello{`\n`}
-                    {name}
-                  </Text>
-                  <Text style={styles.quote}>Good to have you back</Text>
-                </View>
-                <View style={styles.imageContainer}>
-                  <Image
-                    style={styles.image}
-                    source={require('../../assets/images/userImage.jpg')}
-                  />
-                  <Text style={styles.imageText}>@Reg No.</Text>
-                </View>
-              </View>
-              <View style={styles.line}></View>
-              {isStudent ? (
-                <>
-                  <View style={styles.scannerContainer}>
-                    <Text style={styles.contentTitle}>Generate a QR</Text>
-                    <Text style={styles.contentDesc}>
-                      Get your meal by simply generating a QR code
-                    </Text>
-                    <IconButton
-                      text="Generate QR"
-                      iconName="qr-code-outline"
-                      onPress={() => {
-                        handleCodeGen();
-                      }}
-                    />
-                  </View>
-                  <View style={styles.line}></View>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      marginTop: 15,
-                      justifyContent: 'center',
-                    }}>
-                    {showQR && toString(qr) != null ? (
-                      <QRCode value={qr} />
-                    ) : (
-                      <></>
-                    )}
-                  </View>
-                </>
-              ) : (
-                <View style={styles.scannerContainer}>
-                  <Text style={styles.contentTitle}>Use the QR Scanner</Text>
-                  <Text style={styles.contentDesc}>
-                    Scan mess coupons to check the QRs provided for meals
-                  </Text>
-                  <IconButton
-                    text="Scan QR"
-                    iconName="scan"
-                    onPress={() => {
-                      navigation.navigate('QRScan');
-                    }}
-                  />
-                </View>
-              )}
-            </>
-          ) : (
-            <>
-              <View style={styles.userContainer}>
-                <View style={styles.textContainer}>
-                  <Text style={styles.title}>Hello{`\n`}Fellow User!</Text>
-                  <Text style={styles.quote}>Welcome new user</Text>
-                </View>
-                <View style={[styles.imageContainer, styles.falseImage]}>
-                  <Text style={styles.imageText}>No{`\n`}Image</Text>
-                </View>
-              </View>
-              <View style={styles.warningContainer}>
-                <Text style={styles.warningText}>
-                  Please complete your{`\n`}profile to unlock the app
-                </Text>
-                <Button onPress={handleProfileButton}>CLICK HERE</Button>
-              </View>
-            </>
-          )}
-        </View>
-        {isRegistered && (
-          <View style={styles.profileBtn}>
+      <ScrollView>
+        <View style={styles.background}>
+          <View style={styles.logoutBtn}>
             <IconButton
-              text="Go To Profile"
-              iconName="person-outline"
-              onPress={handleProfileButton}
+              text="Logout"
+              iconName="log-out-outline"
+              onPress={handleLogoutButton}
             />
           </View>
-        )}
-      </View>
+          <View style={styles.card}>
+            {isRegistered ? (
+              <>
+                <View style={styles.userContainer}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.title}>
+                      Hello{`\n`}
+                      {name}
+                    </Text>
+                    <Text style={styles.quote}>Good to have you back</Text>
+                  </View>
+                  <View style={styles.imageContainer}>
+                    <Image
+                      style={styles.image}
+                      source={require('../../assets/images/userImage.jpg')}
+                    />
+                    <Text style={styles.imageText}>@Reg No.</Text>
+                  </View>
+                </View>
+                <View style={styles.line}></View>
+                {isStudent ? (
+                  <>
+                    <View style={styles.scannerContainer}>
+                      <Text style={styles.contentTitle}>Generate a QR</Text>
+                      <Text style={styles.contentDesc}>
+                        Get your meal by simply generating a QR code
+                      </Text>
+                      <IconButton
+                        text="Generate QR"
+                        iconName="qr-code-outline"
+                        onPress={() => {
+                          handleCodeGen();
+                        }}
+                      />
+                    </View>
+                    <View style={styles.line}></View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        marginTop: 15,
+                        justifyContent: 'center',
+                      }}>
+                      {showQR && toString(qr) != null ? (
+                        <QRCode value={qr} />
+                      ) : (
+                        <></>
+                      )}
+                    </View>
+                    <View style={styles.line}></View>
+                    <View style={styles.statsContainer}>
+                      <Text style={styles.contentTitle}>
+                        Number of coupons available
+                      </Text>
+                      <Text style={styles.contentDesc}>
+                        Breakfast = {breakfast} / 20
+                      </Text>
+                      <Text style={styles.contentDesc}>
+                        Lunch = {lunch} / 20
+                      </Text>
+                      <Text style={styles.contentDesc}>
+                        Snacks = {snacks} / 20
+                      </Text>
+                      <Text style={styles.contentDesc}>
+                        Dinner = {dinner} / 20
+                      </Text>
+                    </View>
+                  </>
+                ) : (
+                  <>
+                    <View style={styles.scannerContainer}>
+                      <Text style={styles.contentTitle}>
+                        Use the QR Scanner
+                      </Text>
+                      <Text style={styles.contentDesc}>
+                        Scan mess coupons to check the QRs provided for meals
+                      </Text>
+                      <IconButton
+                        text="Scan QR"
+                        iconName="scan"
+                        onPress={() => {
+                          navigation.navigate('QRScan');
+                        }}
+                      />
+                    </View>
+                    <View style={styles.line}></View>
+                    <View style={styles.statsContainer}>
+                      <Text style={styles.contentTitle}>Stats and Metrics</Text>
+                      <View style={styles.statsBox}>
+                        <Text style={[styles.statsFirstText, {width: '25%'}]}>
+                          {}
+                        </Text>
+                        <Text style={styles.statsText}>Daily</Text>
+                        <Text style={styles.statsText}>Monthly</Text>
+                        <Text style={styles.statsText}>Yearly</Text>
+                      </View>
+                      <View style={styles.statsBox}>
+                        <Text style={[styles.statsText, styles.statsFirstText]}>
+                          Breakfast
+                        </Text>
+                        <Text style={styles.statsText}>{dailyBreakfast}</Text>
+                        <Text style={styles.statsText}>{monthlyBreakfast}</Text>
+                        <Text style={styles.statsText}>{yearlyBreakfast}</Text>
+                      </View>
+                      <View style={styles.statsBox}>
+                        <Text style={[styles.statsText, styles.statsFirstText]}>
+                          Lunch
+                        </Text>
+                        <Text style={styles.statsText}>{dailyLunch}</Text>
+                        <Text style={styles.statsText}>{monthlyLunch}</Text>
+                        <Text style={styles.statsText}>{yearlyLunch}</Text>
+                      </View>
+                      <View style={styles.statsBox}>
+                        <Text style={[styles.statsText, styles.statsFirstText]}>
+                          Snacks
+                        </Text>
+                        <Text style={styles.statsText}>{dailySnacks}</Text>
+                        <Text style={styles.statsText}>{monthlySnacks}</Text>
+                        <Text style={styles.statsText}>{yearlySnacks}</Text>
+                      </View>
+                      <View style={styles.statsBox}>
+                        <Text style={[styles.statsText, styles.statsFirstText]}>
+                          Dinner
+                        </Text>
+                        <Text>{dailyDinner}</Text>
+                        <Text>{monthlyDinner}</Text>
+                        <Text>{yearlyDinner}</Text>
+                      </View>
+                    </View>
+                  </>
+                )}
+              </>
+            ) : (
+              <>
+                <View style={styles.userContainer}>
+                  <View style={styles.textContainer}>
+                    <Text style={styles.title}>Hello{`\n`}Fellow User!</Text>
+                    <Text style={styles.quote}>Welcome new user</Text>
+                  </View>
+                  <View style={[styles.imageContainer, styles.falseImage]}>
+                    <Text style={styles.imageText}>No{`\n`}Image</Text>
+                  </View>
+                </View>
+                <View style={styles.warningContainer}>
+                  <Text style={styles.warningText}>
+                    Please complete your{`\n`}profile to unlock the app
+                  </Text>
+                  <Button onPress={handleProfileButton}>CLICK HERE</Button>
+                </View>
+              </>
+            )}
+          </View>
+          {isRegistered && (
+            <View style={styles.profileBtn}>
+              <IconButton
+                text="Go To Profile"
+                iconName="person-outline"
+                onPress={handleProfileButton}
+              />
+            </View>
+          )}
+        </View>
+      </ScrollView>
     </>
   );
 };
@@ -220,8 +309,7 @@ export default HomeScreen;
 
 const styles = StyleSheet.create({
   background: {
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width,
+    flex: 1,
     backgroundColor: '#f0f0f0',
     padding: 16,
     alignItems: 'center',
@@ -232,7 +320,7 @@ const styles = StyleSheet.create({
     marginTop: '10%',
   },
   card: {
-    marginTop: '10%',
+    marginTop: '2%',
     width: '100%',
     borderRadius: 20,
     padding: 16,
@@ -319,5 +407,16 @@ const styles = StyleSheet.create({
   },
   profileBtn: {
     alignSelf: 'flex-end',
+  },
+  statsContainer: {},
+  statsBox: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  statsText: {
+    color: Colors.neutral60,
+  },
+  statsFirstText: {
+    width: '20%',
   },
 });
