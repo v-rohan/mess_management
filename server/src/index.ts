@@ -9,22 +9,16 @@ const AnonymousStrategy = require("passport-anonymous").Strategy;
 import { port, secretOrKey, defAdminPwd } from "./config";
 import { User, UserRole } from "./entity/User";
 import { passwordhasher } from "./services";
-
-
+import { dayJob, minuteJob, monthJob, yearJob } from "./cron-jobs";
+import { Stats } from "./entity/Stats";
 
 var session = require("express-session");
 var passport = require("passport");
 const cors = require("cors");
 
-
-
-
-
 createConnection()
   .then(async (connection) => {
     // create express app
-
-    
 
     console.log("Connected to db");
     const app = express();
@@ -52,21 +46,28 @@ createConnection()
 
     if (number === 0) {
       console.log("hi");
-      
+
       let userAdminBase = new User();
       userAdminBase.role = UserRole.ADMIN;
-      userAdminBase.email = "messadminstration@nitdgp.ac.in";
-
-
+      userAdminBase.email = "a";
 
       userAdminBase.password = await passwordhasher(defAdminPwd.toString());
 
       userAdminBase.profileDone = false;
 
+      let statsMain = new Stats();
+      statsMain.name = "MAIN"
+
+      await connection.manager.save(statsMain)
       await connection.manager.save(userAdminBase);
 
-      console.log("Username", "messadminstration@nitdgp.ac.in");
+      console.log("Username", "messadminstration@nitdgp.ac.in", defAdminPwd);
     }
+
+    //minuteJob.start();
+    dayJob.start();
+    monthJob.start();
+    yearJob.start();
 
     // insert new users for test
 

@@ -1,11 +1,12 @@
 import { getManager, getRepository, ILike, Like } from "typeorm";
-import { NextFunction, Request, Response, Express } from "express";
+import { NextFunction, Request, Response, Express, response } from "express";
 import { User, UserRole } from "../entity/User";
 import { secretOrKey } from "../config";
 import { IGetUserAuthInfoRequest } from "../types";
 import { passwordhasher } from "../services";
 import { AdminCheck } from "../middleware/AuthMiddleware";
 import fetch from "node-fetch";
+import { Stats } from "../entity/Stats";
 
 var bcrypt = require("bcryptjs");
 var crypto = require("crypto");
@@ -71,6 +72,9 @@ module.exports = (app: Express, passport: any) => {
       var email = request.body.email;
       var password = request.body.password;
       try {
+        console.log(email);
+        console.log(password);
+
         var user = await getRepository(User).findOne({ email: email });
         bcrypt.compare(password, user.password, function (err, result) {
           if (result) {
@@ -262,6 +266,40 @@ module.exports = (app: Express, passport: any) => {
         return res.status(400).json({
           message: `Failed to find user with id: ${req.body.id}`,
         });
+      }
+    }
+  );
+
+  app.get(
+    "/stats",
+    passport.authenticate("jwt", { session: false }),
+
+    async (req: IGetUserAuthInfoRequest, res: Response) => {
+      if (
+        req.user.role === UserRole.ADMIN ||
+        req.user.role === UserRole.MESS_WORKER
+      ) {
+        await getRepository(Stats)
+          .findOne()
+          .then((stat) => {
+            console.log(stat);
+            res.status(200).json(stat);
+          })
+          .catch((err) => response.status(500).send(err));
+      } else {
+        await getRepository(User)
+          .findOne({ id: req.user.id })
+          .then((user) => {
+            console.log(user.break_no, user.din_no, user.sn_no, user.lunch_no);
+
+            res.status(200).json({
+              break_no: user.break_no,
+              din_no: user.din_no,
+              sn_no: user.sn_no,
+              lunch_no: user.lunch_no,
+            });
+          })
+          .catch((err) => response.status(500).send(err));
       }
     }
   );

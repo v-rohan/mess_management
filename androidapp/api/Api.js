@@ -151,3 +151,21 @@ export const checkQR = async data => {
     return {status: 500};
   }
 };
+
+export const stats = async() => {
+  try {
+    const token = storage.getString('token');
+    const response = await fetch(`${BACKEND_URL}stats/`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${token}`,
+      },
+    });
+  //  console.log(response);
+    return response;
+  } catch (err) {
+    console.log(err);
+    return {status: 500};
+  }
+}

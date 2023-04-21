@@ -1,75 +1,90 @@
 import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    OneToMany,
-    CreateDateColumn,
-    ManyToOne,
-    OneToOne,
-    JoinColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  CreateDateColumn,
+  ManyToOne,
+  OneToOne,
+  JoinColumn,
 } from "typeorm";
 
 import { Code } from "./Code";
 
 export enum UserRole {
-    ADMIN = "admin",
-    USER = "user",
-    MESS_WORKER = "mess_worker"
+  ADMIN = "admin",
+  USER = "user",
+  MESS_WORKER = "mess_worker",
 }
 
 @Entity()
 export class User {
-    @PrimaryGeneratedColumn()
-    id: number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column({ nullable: true })
-    name: string;
+  @Column({ nullable: true })
+  name: string;
 
-    @Column({ unique: true })
-    email: string;
+  @Column({ unique: true })
+  email: string;
 
-    @Column({ nullable: true })
-    mobile: string;
+  @Column({ nullable: true })
+  mobile: string;
 
-    @Column({ nullable: true })
-    dept: string;
+  @Column({ nullable: true })
+  dept: string;
 
-    @Column({ nullable: true })
-    roll: string;
+  @Column({ nullable: true })
+  roll: string;
 
-    @Column({ nullable: true })
-    regNo: string;
+  @Column({ nullable: true })
+  regNo: string;
 
-    @Column({ nullable: true })
-    hall: string;
+  @Column({ nullable: true })
+  hall: string;
 
-    @Column({ nullable: true })
-    designation: string;
+  @Column({ nullable: false, default: false })
+  codeBlock: Boolean;
 
-    @Column()
-    password: string;
+  @Column({ nullable: true })
+  designation: string;
 
-    @Column({
-        type: "enum",
-        enum: UserRole,
-        default: UserRole.USER,
-    })
-    role: UserRole;
+  @Column()
+  password: string;
 
-    @Column({ nullable: true, default: null })
-    gender: string;
+  @Column({
+    type: "enum",
+    enum: UserRole,
+    default: UserRole.USER,
+  })
+  role: UserRole;
 
-    @OneToMany(() => Code, (Code) => Code.user)
-    codes: Code[];
+  @Column({ nullable: true, default: null })
+  gender: string;
 
-    @CreateDateColumn()
-    created_at: Date;
+  @OneToMany(() => Code, (Code) => Code.user)
+  codes: Code[];
 
-    @Column({nullable:false, default:false})
-    profileDone: Boolean;
+  @CreateDateColumn()
+  created_at: Date;
 
-    // @OneToOne(() => Verify, (verify) => verify.id)
-    // verify: Verify;
+  @Column({ nullable: false, default: 20 })
+  break_no: number;
+
+  @Column({ nullable: false, default: 20 })
+  lunch_no: number;
+
+  @Column({ nullable: false, default: 20 })
+  din_no: number;
+
+  @Column({ nullable: false, default: 20 })
+  sn_no: number;
+
+  @Column({ nullable: false, default: false })
+  profileDone: Boolean;
+
+  // @OneToOne(() => Verify, (verify) => verify.id)
+  // verify: Verify;
 }
 
 // @Entity()

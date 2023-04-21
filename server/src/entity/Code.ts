@@ -14,7 +14,7 @@ export enum MealType {
   BREAKFAST = "breakfast",
   LUNCH = "lunch",
   DINNER = "dinner",
-  EXTRA = "extra",
+  SNACKS = "snacks",
 }
 
 @Entity()

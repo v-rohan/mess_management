@@ -11,7 +11,7 @@ import Colors from '../../constants/Colors';
 import Button from '../../components/ui/Button';
 import QRCode from 'react-native-qrcode-svg';
 import IconButton from '../../components/ui/IconButton';
-import {checkQR, codegen, logout} from '../../api/Api';
+import {checkQR, codegen, logout, stats} from '../../api/Api';
 import {scan} from '../../api/Api';
 import {storage} from '../../App';
 
@@ -93,6 +93,14 @@ const HomeScreen = ({
   useEffect(() => {
     if (userData && userData.name) setName(userData.name);
   });
+
+  useEffect(()=> {
+    async function a(){
+      const res = await stats();
+      console.log(await res.json());
+    }
+    a();
+  })
 
   return (
     <>
