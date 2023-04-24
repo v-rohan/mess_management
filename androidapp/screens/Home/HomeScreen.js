@@ -12,6 +12,7 @@ import Colors from '../../constants/Colors';
 import Button from '../../components/ui/Button';
 import QRCode from 'react-native-qrcode-svg';
 import IconButton from '../../components/ui/IconButton';
+import CouponDisplay from '../../components/visuals/CouponDisplay';
 import {checkQR, codegen, logout, stats} from '../../api/Api';
 import {scan} from '../../api/Api';
 import {storage} from '../../App';
@@ -167,18 +168,8 @@ const HomeScreen = ({
               <>
                 <View style={styles.userContainer}>
                   <View style={styles.textContainer}>
-                    <Text style={styles.title}>
-                      Hello{`\n`}
-                      {name}
-                    </Text>
+                    <Text style={styles.title}>Hello {name}</Text>
                     <Text style={styles.quote}>Good to have you back</Text>
-                  </View>
-                  <View style={styles.imageContainer}>
-                    <Image
-                      style={styles.image}
-                      source={require('../../assets/images/userImage.jpg')}
-                    />
-                    <Text style={styles.imageText}>@Reg No.</Text>
                   </View>
                 </View>
                 <View style={styles.line}></View>
@@ -197,17 +188,18 @@ const HomeScreen = ({
                         }}
                       />
                     </View>
-                    <View style={styles.line}></View>
                     <View
                       style={{
-                        flexDirection: 'row',
-                        marginTop: 15,
+                        flexDirection: 'column',
+                        rowGap: 12,
                         justifyContent: 'center',
+                        alignItems: 'center',
                       }}>
-                      {showQR && toString(qr) != null ? (
-                        <QRCode value={qr} />
-                      ) : (
-                        <></>
+                      {showQR && toString(qr) != null && (
+                        <>
+                          <View style={styles.line}></View>
+                          <QRCode value={qr} color={Colors.primary60} />
+                        </>
                       )}
                     </View>
                     <View style={styles.line}></View>
@@ -215,18 +207,12 @@ const HomeScreen = ({
                       <Text style={styles.contentTitle}>
                         Number of coupons available
                       </Text>
-                      <Text style={styles.contentDesc}>
-                        Breakfast = {breakfast} / 20
-                      </Text>
-                      <Text style={styles.contentDesc}>
-                        Lunch = {lunch} / 20
-                      </Text>
-                      <Text style={styles.contentDesc}>
-                        Snacks = {snacks} / 20
-                      </Text>
-                      <Text style={styles.contentDesc}>
-                        Dinner = {dinner} / 20
-                      </Text>
+                      <CouponDisplay
+                        breakfast={breakfast}
+                        lunch={lunch}
+                        snacks={snacks}
+                        dinner={dinner}
+                      />
                     </View>
                   </>
                 ) : (
@@ -297,11 +283,10 @@ const HomeScreen = ({
               <>
                 <View style={styles.userContainer}>
                   <View style={styles.textContainer}>
-                    <Text style={styles.title}>Hello{`\n`}Fellow User!</Text>
-                    <Text style={styles.quote}>Welcome new user</Text>
-                  </View>
-                  <View style={[styles.imageContainer, styles.falseImage]}>
-                    <Text style={styles.imageText}>No{`\n`}Image</Text>
+                    <Text style={styles.title}>Hello Fellow User!</Text>
+                    <Text style={styles.quote}>
+                      Welcome to the mess management application
+                    </Text>
                   </View>
                 </View>
                 <View style={styles.warningContainer}>
@@ -353,20 +338,22 @@ const styles = StyleSheet.create({
   userContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
   },
-  textContainer: {},
+  textContainer: {
+    width: '100%',
+  },
   title: {
     color: Colors.primary60,
     fontSize: 28,
     lineHeight: 36,
-    textAlign: 'left',
+    textAlign: 'center',
   },
   quote: {
     color: Colors.neutral60,
     fontSize: 16,
     lineHeight: 24,
-    textAlign: 'left',
+    textAlign: 'center',
   },
   imageContainer: {
     justifyContent: 'center',
@@ -431,7 +418,9 @@ const styles = StyleSheet.create({
   profileBtn: {
     alignSelf: 'flex-end',
   },
-  statsContainer: {},
+  statsContainer: {
+    justifyContent: 'center',
+  },
   statsBox: {
     flexDirection: 'row',
     justifyContent: 'space-between',

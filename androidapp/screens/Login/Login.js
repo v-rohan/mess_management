@@ -73,7 +73,7 @@ const Login = ({navigation, setIsSignedIn, setIsAdmin, setIsRegistered}) => {
             onChangeText={setEmail}
             placeholder="Email"
             iconName="envelope"
-            keyboardType="email-address"
+            // keyboardType="email-address"
             ref={emailRef}
             nextRef={pwdRef}
           />

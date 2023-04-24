@@ -13,6 +13,7 @@ import Input from '../../components/ui/Input';
 import {handleGoogleLogin} from '../Login/handleGoogle';
 import Button from '../../components/ui/Button';
 import BackButton from '../../components/ui/BackButton';
+import IconButton from '../../components/ui/IconButton';
 import Colors from '../../constants/Colors';
 import {register} from '../../api/Api';
 import {storage} from '../../App';
@@ -63,7 +64,7 @@ const Register = ({navigation, setIsSignedIn, setIsAdmin, setIsRegistered}) => {
             onChangeText={setEmail}
             placeholder="Email"
             iconName="envelope"
-            keyboardType="email-address"
+            // keyboardType="email-address"
             ref={emailRef}
             nextRef={pwdRef}
           />
@@ -76,48 +77,16 @@ const Register = ({navigation, setIsSignedIn, setIsAdmin, setIsRegistered}) => {
             ref={pwdRef}
           />
         </View>
-        <View style={styles.btnContainer}>
+        <View style={styles.btnsContainer}>
           <Button onPress={handleRegister}>REGISTER</Button>
-        </View>
-        <View
-          style={{
-            marginTop: 18,
-            alignItems: 'center',
-            alignSelf: 'center',
-            flexDirection: 'row',
-          }}>
-          <Text
-            style={{
-              fontFamily: 'QuickSand',
-              fontWeight: '800',
-              color: '#595959',
-              fontSize: 13,
-              marginTop: 7,
-            }}>
-            Or Sign in with{'   '}
-          </Text>
-          <TouchableOpacity
+          <Text style={styles.txt}>Or</Text>
+          <IconButton
+            text="Sign Up With Google"
+            iconName="logo-google"
             onPress={() =>
               handleGoogleLogin(setIsSignedIn, setIsAdmin, setIsRegistered)
-            }>
-            <View
-              style={{
-                padding: 10,
-                borderRadius: 15,
-                borderWidth: 1.5,
-                borderColor: '#000000',
-                alignItems: 'center',
-              }}>
-              <Image
-                source={require('../../assets/images/googl.png')}
-                style={{marginTop: 7, opacity: 1, marginRight: 3}}
-              />
-              <Text
-                style={{fontFamily: 'Poppins', marginTop: 8, color: '#000'}}>
-                Google
-              </Text>
-            </View>
-          </TouchableOpacity>
+            }
+          />
         </View>
         <View style={styles.txtContainer}>
           <Text style={styles.txt}>Already Have An Account? </Text>
@@ -158,8 +127,11 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     gap: 16,
   },
-  btnContainer: {
+  btnsContainer: {
     marginVertical: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    rowGap: 8,
   },
   txtContainer: {
     flexDirection: 'row',
