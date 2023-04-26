@@ -13,6 +13,7 @@ import Button from '../../components/ui/Button';
 import QRCode from 'react-native-qrcode-svg';
 import IconButton from '../../components/ui/IconButton';
 import CouponDisplay from '../../components/visuals/CouponDisplay';
+import CouponCounter from '../../components/visuals/CouponCounter';
 import {checkQR, codegen, logout, stats} from '../../api/Api';
 import {scan} from '../../api/Api';
 import {storage} from '../../App';
@@ -36,20 +37,26 @@ const HomeScreen = ({
   const [snacks, setSnacks] = useState();
   const [dinner, setDinner] = useState();
 
-  const [dailyBreakfast, setDailyBreakfast] = useState();
-  const [dailyLunch, setDailyLunch] = useState();
-  const [dailySnacks, setDailySnacks] = useState();
-  const [dailyDinner, setDailyDinner] = useState();
+  const [stats, setStats] = useState({
+    daily: {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
+    monthly: {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
+    yearly: {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
+  });
 
-  const [monthlyBreakfast, setMonthlyBreakfast] = useState();
-  const [monthlyLunch, setMonthlyLunch] = useState();
-  const [monthlySnacks, setMonthlySnacks] = useState();
-  const [monthlyDinner, setMonthlyDinner] = useState();
+  // const [dailyBreakfast, setDailyBreakfast] = useState();
+  // const [dailyLunch, setDailyLunch] = useState();
+  // const [dailySnacks, setDailySnacks] = useState();
+  // const [dailyDinner, setDailyDinner] = useState();
 
-  const [yearlyBreakfast, setYearlyBreakfast] = useState();
-  const [yearlyLunch, setYearlyLunch] = useState();
-  const [yearlySnacks, setYearlySnacks] = useState();
-  const [yearlyDinner, setYearlyDinner] = useState();
+  // const [monthlyBreakfast, setMonthlyBreakfast] = useState();
+  // const [monthlyLunch, setMonthlyLunch] = useState();
+  // const [monthlySnacks, setMonthlySnacks] = useState();
+  // const [monthlyDinner, setMonthlyDinner] = useState();
+
+  // const [yearlyBreakfast, setYearlyBreakfast] = useState();
+  // const [yearlyLunch, setYearlyLunch] = useState();
+  // const [yearlySnacks, setYearlySnacks] = useState();
+  // const [yearlyDinner, setYearlyDinner] = useState();
 
   // useEffect(()=>{
   //   setInterval(()=>{console.log(storage.getString('token'))}, 1000)
@@ -127,21 +134,51 @@ const HomeScreen = ({
         setLunch(resJson.lunch_no);
         setSnacks(resJson.sn_no);
       } else {
-        setDailyBreakfast(resJson.breakfast_day_no);
-        setMonthlyBreakfast(resJson.breakfast_month_no);
-        setYearlyBreakfast(resJson.breakfast_yearly_no);
+        // setDailyBreakfast(resJson.breakfast_day_no);
+        // setMonthlyBreakfast(resJson.breakfast_month_no);
+        // setYearlyBreakfast(resJson.breakfast_yearly_no);
 
-        setDailyLunch(resJson.lunch_day_no);
-        setMonthlyLunch(resJson.lunch_month_no);
-        setYearlyLunch(resJson.lunch_yearly_no);
+        // setDailyLunch(resJson.lunch_day_no);
+        // setMonthlyLunch(resJson.lunch_month_no);
+        // setYearlyLunch(resJson.lunch_yearly_no);
 
-        setDailySnacks(resJson.sn_day_no);
-        setMonthlySnacks(resJson.sn_month_no);
-        setYearlySnacks(resJson.sn_yearly_no);
+        // setDailySnacks(resJson.sn_day_no);
+        // setMonthlySnacks(resJson.sn_month_no);
+        // setYearlySnacks(resJson.sn_yearly_no);
 
-        setDailyDinner(resJson.din_day_no);
-        setMonthlyDinner(resJson.din_month_no);
-        setYearlyDinner(resJson.din_yearly_no);
+        // setDailyDinner(resJson.din_day_no);
+        // setMonthlyDinner(resJson.din_month_no);
+        // setYearlyDinner(resJson.din_yearly_no);
+
+        const dailyStats = {
+          breakfast: resJson.breakfast_day_no,
+          lunch: resJson.lunch_day_no,
+          snacks: resJson.sn_day_no,
+          dinner: resJson.dinner_day_no,
+        };
+
+        const monthlyStats = {
+          breakfast: resJson.breakfast_month_no,
+          lunch: resJson.lunch_month_no,
+          snacks: resJson.sn_month_no,
+          dinner: resJson.dinner_month_no,
+        };
+
+        const yearlyStats = {
+          breakfast: resJson.breakfast_yearly_no,
+          lunch: resJson.lunch_yearly_no,
+          snacks: resJson.sn_yearly_no,
+          dinner: resJson.dinner_yearly_no,
+        };
+
+        setStats(prevState => {
+          return {
+            ...prevState,
+            daily: dailyStats,
+            monthly: monthlyStats,
+            yearly: yearlyStats,
+          };
+        });
       }
     }
     a();
@@ -234,8 +271,9 @@ const HomeScreen = ({
                     </View>
                     <View style={styles.line}></View>
                     <View style={styles.statsContainer}>
-                      <Text style={styles.contentTitle}>Stats and Metrics</Text>
-                      <View style={styles.statsBox}>
+                      <Text style={styles.contentTitle}>Usage of Coupons</Text>
+                      <CouponCounter stats={stats} />
+                      {/* <View style={styles.statsBox}>
                         <Text style={[styles.statsFirstText, {width: '25%'}]}>
                           {}
                         </Text>
@@ -274,7 +312,7 @@ const HomeScreen = ({
                         <Text>{dailyDinner}</Text>
                         <Text>{monthlyDinner}</Text>
                         <Text>{yearlyDinner}</Text>
-                      </View>
+                      </View> */}
                     </View>
                   </>
                 )}

@@ -1,34 +1,34 @@
 import {StyleSheet, View} from 'react-native';
 import React from 'react';
-import ProgressBar from './ProgressBar';
+import VerticalProgressBar from './VerticalProgressBar';
 import Colors from '../../constants/Colors';
 
 const CouponDisplay = ({breakfast, lunch, snacks, dinner}) => {
   return (
     <View style={styles.container}>
       <View style={styles.metricContainer}>
-        <ProgressBar
+        <VerticalProgressBar
           fgColor={Colors.primary70}
           bgColor={Colors.primary80}
           baseCoupons={20}
           currentCoupons={breakfast}
           title="Breakfast"
         />
-        <ProgressBar
+        <VerticalProgressBar
           fgColor={Colors.secondary70}
           bgColor={Colors.secondary80}
           baseCoupons={20}
           currentCoupons={lunch}
           title="Lunch"
         />
-        <ProgressBar
+        <VerticalProgressBar
           fgColor={Colors.tertiary70}
           bgColor={Colors.tertiary80}
           baseCoupons={20}
           currentCoupons={snacks}
           title="Snacks"
         />
-        <ProgressBar
+        <VerticalProgressBar
           fgColor={Colors.neutral70}
           bgColor={Colors.neutral80}
           baseCoupons={20}

@@ -1,7 +1,7 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
-const ProgressBar = ({
+const VerticalProgressBar = ({
   fgColor,
   bgColor,
   baseCoupons,
@@ -30,7 +30,7 @@ const ProgressBar = ({
   );
 };
 
-export default ProgressBar;
+export default VerticalProgressBar;
 
 const styles = StyleSheet.create({
   outerContainer: {

@@ -148,8 +148,8 @@ export default function App() {
                       {props => (
                         <HomeScreen
                           {...props}
-                          isRegistered={true}
-                          isStudent={false}
+                          isRegistered={isRegistered}
+                          isStudent={!isAdmin}
                           userData={userData}
                           userDataSet={userDataSet}
                           setIsSignedIn={setIsSignedIn}
