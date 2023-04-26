@@ -142,14 +142,14 @@ export default function App() {
               <Stack.Screen name="Splash" component={LoadingScreen} />
             ) : (
               <>
-                {isSignedIn ? (
+                {true ? (
                   <>
                     <Stack.Screen name="HomeScreen">
                       {props => (
                         <HomeScreen
                           {...props}
-                          isRegistered={isRegistered}
-                          isStudent={!isAdmin}
+                          isRegistered={true}
+                          isStudent={false}
                           userData={userData}
                           userDataSet={userDataSet}
                           setIsSignedIn={setIsSignedIn}
