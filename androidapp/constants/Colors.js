@@ -12,6 +12,7 @@ const Colors = {
     neutral60: "#998E8B",
     neutral70: "#B4A9A5",
     neutral80: "#D0C4C0",
+    neutral90: "#EDE0DC",
 };
 
 export default Colors;
