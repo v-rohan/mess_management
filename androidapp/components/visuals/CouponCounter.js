@@ -1,37 +1,42 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import HorizontalMixedBar from './HorizontalMixedBar';
 import Colors from '../../constants/Colors';
 
 const CouponCounter = ({stats}) => {
-  const {daily, monthly, yearly} = stats;
+  //const {daily, monthly, yearly} = stats;
+
+  useEffect(() => {
+    console.log('abcddddddd');
+    console.log(stats);
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.barContainer}>
         <HorizontalMixedBar
-          breakfast={daily.breakfast}
-          lunch={daily.lunch}
-          snacks={daily.snacks}
-          dinner={daily.dinner}
+          breakfast={stats[0].breakfast}
+          lunch={stats[0].lunch}
+          snacks={stats[0].snacks}
+          dinner={stats[0].dinner}
         />
         <Text style={styles.barTxt}>Daily</Text>
       </View>
       <View style={styles.barContainer}>
         <HorizontalMixedBar
-          breakfast={monthly.breakfast}
-          lunch={monthly.lunch}
-          snacks={monthly.snacks}
-          dinner={monthly.dinner}
+          breakfast={stats[1].breakfast}
+          lunch={stats[1].lunch}
+          snacks={stats[1].snacks}
+          dinner={stats[1].dinner}
         />
         <Text style={styles.barTxt}>Monthly</Text>
       </View>
       <View style={styles.barContainer}>
         <HorizontalMixedBar
-          breakfast={yearly.breakfast}
-          lunch={yearly.lunch}
-          snacks={yearly.snacks}
-          dinner={yearly.dinner}
+          breakfast={stats[2].breakfast}
+          lunch={stats[2].lunch}
+          snacks={stats[2].snacks}
+          dinner={stats[2].dinner}
         />
         <Text style={styles.barTxt}>Yearly</Text>
       </View>

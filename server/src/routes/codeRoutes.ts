@@ -195,8 +195,8 @@ module.exports = (app: Express, passport: any) => {
                     user.sn_no--;
                   }
 
-                  user.codeBlock = true;
-                  scheduler(user.id);
+                  user.codeBlock = false;
+                  //scheduler(user.id);
 
                   await getRepository(User)
                     .save(user)
