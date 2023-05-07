@@ -31,17 +31,18 @@ const HomeScreen = ({
   const [qr, setQR] = useState(null);
 
   const [code, onChangeCode] = React.useState('');
+  const [loading, setLoad] = useState(true);
 
   const [breakfast, setBreakfast] = useState();
   const [lunch, setLunch] = useState();
   const [snacks, setSnacks] = useState();
   const [dinner, setDinner] = useState();
 
-  const [stats, setStats] = useState({
-    daily: {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
-    monthly: {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
-    yearly: {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
-  });
+  const [statsA, setStats] = useState([
+    {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
+    {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
+    {breakfast: 0, lunch: 0, snacks: 0, dinner: 0},
+  ]);
 
   // const [dailyBreakfast, setDailyBreakfast] = useState();
   // const [dailyLunch, setDailyLunch] = useState();
@@ -71,11 +72,15 @@ const HomeScreen = ({
   }, [route.params?.code]);
 
   useEffect(() => {
-    if (code !== '') {
-      console.log(code);
-      scan(code);
-      onChangeCode('');
+    async function scanner() {
+      if (code !== '') {
+        console.log(code);
+        await scan(code);
+        update_stats();
+        onChangeCode('');
+      }
     }
+    scanner();
   }, [code]);
 
   useEffect(() => {
@@ -85,6 +90,7 @@ const HomeScreen = ({
         console.log('IMPORTANT ->>>>>>>>', res.status);
         if (res.status === 200) {
           setShowQR(false);
+          await update_stats();
           clearInterval(interval);
         }
       }, 2000);
@@ -123,66 +129,52 @@ const HomeScreen = ({
     if (userData && userData.name) setName(userData.name);
   });
 
-  useEffect(() => {
-    async function a() {
-      const res = await stats();
-      const resJson = await res.json();
-      console.log(resJson);
-      if (isStudent === true) {
-        setBreakfast(resJson.break_no);
-        setDinner(resJson.din_no);
-        setLunch(resJson.lunch_no);
-        setSnacks(resJson.sn_no);
-      } else {
-        // setDailyBreakfast(resJson.breakfast_day_no);
-        // setMonthlyBreakfast(resJson.breakfast_month_no);
-        // setYearlyBreakfast(resJson.breakfast_yearly_no);
-
-        // setDailyLunch(resJson.lunch_day_no);
-        // setMonthlyLunch(resJson.lunch_month_no);
-        // setYearlyLunch(resJson.lunch_yearly_no);
-
-        // setDailySnacks(resJson.sn_day_no);
-        // setMonthlySnacks(resJson.sn_month_no);
-        // setYearlySnacks(resJson.sn_yearly_no);
-
-        // setDailyDinner(resJson.din_day_no);
-        // setMonthlyDinner(resJson.din_month_no);
-        // setYearlyDinner(resJson.din_yearly_no);
-
-        const dailyStats = {
+  async function update_stats() {
+    const res = await stats();
+    const resJson = await res.json();
+    console.log('abcd', resJson);
+    if (isStudent === true) {
+      setBreakfast(resJson.break_no);
+      setDinner(resJson.din_no);
+      setLunch(resJson.lunch_no);
+      setSnacks(resJson.sn_no);
+    } else {
+      console.log('admin block');
+      const statsAmutable = [
+        {
           breakfast: resJson.breakfast_day_no,
           lunch: resJson.lunch_day_no,
           snacks: resJson.sn_day_no,
-          dinner: resJson.dinner_day_no,
-        };
-
-        const monthlyStats = {
+          dinner: resJson.din_day_no,
+        },
+        {
           breakfast: resJson.breakfast_month_no,
           lunch: resJson.lunch_month_no,
           snacks: resJson.sn_month_no,
-          dinner: resJson.dinner_month_no,
-        };
-
-        const yearlyStats = {
+          dinner: resJson.din_month_no,
+        },
+        {
           breakfast: resJson.breakfast_yearly_no,
           lunch: resJson.lunch_yearly_no,
           snacks: resJson.sn_yearly_no,
-          dinner: resJson.dinner_yearly_no,
-        };
+          dinner: resJson.din_yearly_no,
+        },
+      ];
 
-        setStats(prevState => {
-          return {
-            ...prevState,
-            daily: dailyStats,
-            monthly: monthlyStats,
-            yearly: yearlyStats,
-          };
-        });
-      }
+      console.log('ayo');
+
+      setStats(statsAmutable);
     }
-    a();
-  });
+  }
+
+  useEffect(() => {
+    update_stats();
+  }, []);
+
+  useEffect(() => {
+    console.log('stats admin monitor', statsA);
+    setLoad(false);
+  }, [statsA]);
 
   return (
     <>
@@ -272,7 +264,9 @@ const HomeScreen = ({
                     <View style={styles.line}></View>
                     <View style={styles.statsContainer}>
                       <Text style={styles.contentTitle}>Usage of Coupons</Text>
-                      <CouponCounter stats={stats} />
+                      {/* {!loading? null : ( */}
+                      <CouponCounter stats={statsA} />
+                      {/* )} */}
                       {/* <View style={styles.statsBox}>
                         <Text style={[styles.statsFirstText, {width: '25%'}]}>
                           {}

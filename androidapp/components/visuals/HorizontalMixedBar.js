@@ -1,8 +1,12 @@
 import {StyleSheet, Text, View} from 'react-native';
-import React from 'react';
+import React, {useEffect} from 'react';
 import Colors from '../../constants/Colors';
 
 const HorizontalMixedBar = ({breakfast, lunch, snacks, dinner}) => {
+  console.log('hmx');
+  useEffect(() => {
+    console.log(breakfast, lunch, snacks, dinner);
+  });
   const total = breakfast + lunch + snacks + dinner;
   const bar1Width = (breakfast / total) * 100;
   const bar2Width = (lunch / total) * 100;
@@ -11,7 +15,7 @@ const HorizontalMixedBar = ({breakfast, lunch, snacks, dinner}) => {
 
   return (
     <View style={styles.container}>
-      {breakfast && (
+      {/* {breakfast && ( */}
         <View
           style={[
             styles.bar,
@@ -19,8 +23,8 @@ const HorizontalMixedBar = ({breakfast, lunch, snacks, dinner}) => {
           ]}>
           <Text style={styles.txt}>{breakfast}</Text>
         </View>
-      )}
-      {lunch && (
+      {/* )}
+      {lunch && ( */}
         <View
           style={[
             styles.bar,
@@ -28,8 +32,8 @@ const HorizontalMixedBar = ({breakfast, lunch, snacks, dinner}) => {
           ]}>
           <Text style={styles.txt}>{lunch}</Text>
         </View>
-      )}
-      {snacks && (
+      {/* )}
+      {snacks && ( */}
         <View
           style={[
             styles.bar,
@@ -37,8 +41,8 @@ const HorizontalMixedBar = ({breakfast, lunch, snacks, dinner}) => {
           ]}>
           <Text style={styles.txt}>{snacks}</Text>
         </View>
-      )}
-      {dinner && (
+      {/* )}
+      {dinner && ( */}
         <View
           style={[
             styles.bar,
@@ -46,7 +50,7 @@ const HorizontalMixedBar = ({breakfast, lunch, snacks, dinner}) => {
           ]}>
           <Text style={styles.txt}>{dinner}</Text>
         </View>
-      )}
+      {/* )} */}
     </View>
   );
 };
