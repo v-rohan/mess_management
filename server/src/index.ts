@@ -49,7 +49,7 @@ createConnection()
 
       let userAdminBase = new User();
       userAdminBase.role = UserRole.ADMIN;
-      userAdminBase.email = "a";
+      userAdminBase.email = "messadminstration@nitdgp.ac.in";
 
       userAdminBase.password = await passwordhasher(defAdminPwd.toString());
 

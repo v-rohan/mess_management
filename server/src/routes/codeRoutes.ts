@@ -33,8 +33,8 @@ module.exports = (app: Express, passport: any) => {
         try {
           var newCode = new Code();
 
-          let b_s = "00:00:00";
-          let b_e = "23:00:00";
+          let b_s = "07:55:00";
+          let b_e = "09:45:00";
 
           let l_s = "11:59:45";
           let l_e = "13:45:00";
