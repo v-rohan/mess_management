@@ -34,7 +34,7 @@ module.exports = (app: Express, passport: any) => {
           var newCode = new Code();
 
           let b_s = "00:00:00";
-          let b_e = "23:00:00";
+          let b_e = "23:59:59";
 
           let l_s = "11:59:45";
           let l_e = "13:45:00";
