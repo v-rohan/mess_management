@@ -142,7 +142,7 @@ export default function App() {
               <Stack.Screen name="Splash" component={LoadingScreen} />
             ) : (
               <>
-                {true ? (
+                {isSignedIn ? (
                   <>
                     <Stack.Screen name="HomeScreen">
                       {props => (
